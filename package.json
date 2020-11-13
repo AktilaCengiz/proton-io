@@ -1,0 +1,26 @@
+{
+  "name": "@aktilacengiz/proton-io",
+  "version": "0.1.3",
+  "description": "a simple command handler for discord.js v12",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": ["Discord.js","discordjs","discord-command-handler"],
+  "author": "Aktila",
+  "repository": {
+    "type":"git",
+    "url":"git+https://github.com/AktilaCengiz/proton-io.git"
+  },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "bugs": {
+    "url":"https://github.com/AktilaCengiz/proton-io/issues"
+  },
+  
+  "homepage": "https://github.com/AktilaCengiz/proton-io#readme",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "fs": "0.0.1-security"
+  }
+}
