@@ -2,7 +2,7 @@
 // Restart Command
 // Proton-io Copyright
 // |||||||||||||||||||||||
-const restart = require(`${process.cwd()}/node_modules/proton-io/Other/restart`)
+const restart = require("../Other/restart")
 
 module.exports = {
     name: "restart",
