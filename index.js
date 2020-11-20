@@ -77,7 +77,7 @@ if(options.owner) {
     .filter(file3 =>file3.endsWith('.js'));
     
     for (var file3 of commandFiles2) {
-        var ownerCommands = require(`${process.cwd()}/node_modules/proton-io/ownerCommands/${file3}`)
+        var ownerCommands = require(`./ownerCommands/${file3}`)
     
     client.commands.set(ownerCommands.name,ownerCommands)
     if (ownerCommands.aliases && Array.isArray(ownerCommands.aliases)) ownerCommands.aliases.forEach(alias => client.aliases.set(alias, ownerCommands.name));
@@ -91,7 +91,7 @@ if(options.defaultCommands) {
   .filter(file0 =>file0.endsWith('.js'));
   
   for (var file0 of commandFiles3) {
-      var defaultCommands = require(`${process.cwd()}/node_modules/proton-io/defaultCommands/${file0}`)
+      var defaultCommands = require(`./defaultCommands/${file0}`)
   
   client.commands.set(defaultCommands.name,defaultCommands)
   if (defaultCommands.aliases && Array.isArray(defaultCommands.aliases)) defaultCommands.aliases.forEach(alias => client.aliases.set(alias, defaultCommands.name));
