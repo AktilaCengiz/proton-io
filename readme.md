@@ -30,10 +30,10 @@ proton-io module offers you many features besides loading commands.
 
 ## 📕 Öğretim rehberi
 
-* [**Tıkla rehbere git.**](https://aktilacengiz.github.io/Proton-ioX/) 
+* [**Tıkla rehbere git.**](http://protonio.js.org) 
 ve öğrenmeye başlayabilirsiniz.
 
 ## 📕 Guide
 
-* [**Click for Guide**](https://aktilacengiz.github.io/Proton-ioX/) 
+* [**Click for Guide**](http://protonio.js.org) 
 You can start learning how to use proton-io by clicking the button!
