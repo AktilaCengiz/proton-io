@@ -1,5 +1,6 @@
-const readdir = require("../../src/Utils/readdir");
+/* eslint-disable no-undef */
 
+const readdir = require("../../src/Utils/readdir");
 
 test("readdir", () => {
     expect(readdir(`${process.cwd()}/src`).length).toBeGreaterThan(0);
