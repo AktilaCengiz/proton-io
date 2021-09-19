@@ -1,6 +1,6 @@
 {
   "name": "@aktilacengiz/proton-io",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "a simple command handler for discord.js v13",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,14 @@
     "discord.js",
     "discordjs",
     "discord-command-handler",
-    "discordjs-commandHandler"
+    "discordjs-commandHandler",
+    "commandHandler",
+    "command-handler",
+    "commandLoader",
+    "command-loader",
+    "discord.js command loader",
+    "discord command loader",
+    "discord command handler"
   ],
   "author": "Venosa",
   "repository": {
@@ -27,7 +34,9 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.0",
-    "fs": "0.0.1-security"
+    "discord.js": "^13.1.0",
+    "fs": "0.0.1-security",
+    "mongoose": "^6.0.6"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

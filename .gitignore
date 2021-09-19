@@ -1,5 +1,7 @@
 # Dirs
 node_modules
+tmp
 
 # Files
 yarn.lock
+package-lock.json

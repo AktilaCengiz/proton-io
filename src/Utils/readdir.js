@@ -1,7 +1,6 @@
 const { readdirSync, statSync } = require("fs");
 const { join } = require("path");
 
-
 /**
  * Returns all files in the specified folder as an array.
  * @param {string} path 
