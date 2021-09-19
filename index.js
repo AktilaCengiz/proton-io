@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+
 /*
   Copyright 2021 Venosa Studio
 
@@ -13,17 +15,17 @@
 */
 
 module.exports = {
-  ProtonClient: require("./src/Structures/ProtonClient"),
-  ProtonHandler: require("./src/Structures/ProtonHandler"),
-  ProtonModule: require("./src/Structures/ProtonModule"),
-  CommandHandler: require("./src/Structures/Commands/CommandHandler"),
-  ListenerHandler: require("./src/Structures/Listeners/ListenerHandler"),
-  Command: require("./src/Structures/Commands/Command"),
-  Listener: require("./src/Structures/Listeners/Listener"),
-  MongooseProvider: require("../src/Struchtures/DatabaseProviders/MongooseProvider"),
-  Utils: {
-    readdir: require("../src/Utils/readdir")
-  }
+    ProtonClient: require("./src/Structures/ProtonClient"),
+    ProtonHandler: require("./src/Structures/ProtonHandler"),
+    ProtonModule: require("./src/Structures/ProtonModule"),
+    CommandHandler: require("./src/Structures/Commands/CommandHandler"),
+    ListenerHandler: require("./src/Structures/Listeners/ListenerHandler"),
+    Command: require("./src/Structures/Commands/Command"),
+    Listener: require("./src/Structures/Listeners/Listener"),
+    MongooseProvider: require("./src/Structures/DatabaseProviders/MongooseProvider"),
+    Utils: {
+        readdir: require("./src/Utils/readdir")
+    }
 };
 
 // nothing goes as planned in this cursed world...
