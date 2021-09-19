@@ -55,14 +55,14 @@ module.exports = class {
         });
       });
 
-        //########
+        //################
         // command Handler
-        //########
+        //################
         
-        //############
+        //####################
         // if(ready?) go on!
         console.log(holdMessage)
-       //############
+        //####################
         client.commands=new Collection()
         client.aliases=new Map()
         var commandFiles = fs
@@ -158,7 +158,3 @@ if(options.defaultCommands) {
    
     }
 }
-//################################# 
-// Everything start with end.
-// - Aktila Cengiz
-//################################# 
