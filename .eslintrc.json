@@ -29,6 +29,6 @@
         ],
         "no-plusplus": "off",
         "no-restricted-syntax": "off",
-        "linebreak-style":"off"
+        "linebreak-style": "off"
     }
 }
