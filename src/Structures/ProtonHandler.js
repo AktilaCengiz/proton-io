@@ -1,6 +1,11 @@
+/* eslint-disable new-cap */
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+
 const { Collection } = require("discord.js");
+const { EventEmitter } = require("events");
 const readdir = require("../Utils/readdir");
-const BaseModule = require("./BaseModule");
+const BaseModule = require("./ProtonModule");
 
 class ProtonHandler extends EventEmitter {
     constructor(client, options = {}) {
@@ -30,12 +35,11 @@ class ProtonHandler extends EventEmitter {
     deregister(mod) {
         this.modules.delete(mod.id);
 
-        if (typeof mod.filepath === 'string')
+        if (typeof mod.filepath === "string")
             delete require.cache[require.resolve(mod.filepath)];
 
         return mod;
     }
-
 
     load(fileOrFn) {
         const isFile = typeof fileOrFn === "string";

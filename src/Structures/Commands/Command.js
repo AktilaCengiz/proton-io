@@ -20,14 +20,9 @@ class Command extends ProtonModule {
             ? options.cooldown
             : null;
 
-        this.permissions = typeof options.permissions === "array"
-            ? options.cooldown
-            : null;
-
         this.information = typeof options.information === "object"
             ? options.information
             : {};
-
     }
 }
 

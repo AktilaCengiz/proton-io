@@ -3,7 +3,7 @@ const { join } = require("path");
 
 /**
  * Returns all files in the specified folder as an array.
- * @param {string} path 
+ * @param {string} path
  * @returns {string[]}
  */
 module.exports = (path) => {
@@ -16,13 +16,13 @@ module.exports = (path) => {
             const resolvedPath = join(_path, files[i]);
 
             if (statSync(resolvedPath).isDirectory())
-                read(resolvedPath)
+                read(resolvedPath);
             else
                 paths.push(resolvedPath);
         }
-    }
+    };
 
     read(path);
 
     return paths;
-}
+};

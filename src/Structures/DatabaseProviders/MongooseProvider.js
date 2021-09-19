@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-class MongooseProvider { };
-
+class MongooseProvider { }
 
 module.exports = MongooseProvider;

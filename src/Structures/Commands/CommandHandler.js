@@ -1,4 +1,4 @@
-const ProtonHandler = require('../ProtonHandler');
+const ProtonHandler = require("../ProtonHandler");
 
 class CommandHandler extends ProtonHandler { }
 
