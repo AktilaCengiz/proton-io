@@ -4,6 +4,7 @@
 
 const { Collection } = require("discord.js");
 const { EventEmitter } = require("events");
+const { sep } = require("path");
 const readdir = require("../Utils/readdir");
 const ProtonModule = require("./ProtonModule");
 
@@ -25,6 +26,11 @@ class ProtonHandler extends EventEmitter {
         /** @type {string!} */
         this.directory = options.directory;
 
+        /** @type {boolean} */
+        this.automateCategories = typeof options.automateCategories === "boolean"
+            ? options.automateCategories
+            : false;
+
         /** @type {Collection<string, ProtonModule>} */
         this.modules = new Collection();
     }
@@ -41,7 +47,13 @@ class ProtonHandler extends EventEmitter {
         // Add the "ProtonHandler" property to the module.
         mod.handler = this;
         // Add the "filepath" property to the module.
-        mod.filepath = filepath;
+        mod.filepath = filepath ?? null;
+
+        // Automate categories.
+        if (mod.filepath && this.automateCategories && mod.category === "default") {
+            const dirNames = mod.filepath.split(sep);
+            mod.category = dirNames[dirNames.length - 2];
+        }
 
         // Add module to cache.
         this.modules.set(mod.id, mod);
@@ -111,7 +123,7 @@ class ProtonHandler extends EventEmitter {
     /**
      * Reloads the module.
      * @param {string} id - The ID of the module to be reloaded.
-     * @returns {ProtonModule}
+     * @returns {ProtonModule?}
      */
     reload(id) {
         // Get module.
@@ -178,6 +190,7 @@ module.exports = ProtonHandler;
 /**
  * @typedef {object} ProtonHandlerOptions
  * @property {string} [directory] - Directory containing modules for the handler.
+ * @property {boolean} [automateCategories=false] - Whether or not to set each module's category to its parent directory name.
  */
 
 /**
