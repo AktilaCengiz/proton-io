@@ -43,7 +43,7 @@ ProtonModule {
           "user": null,
           "users": Array [],
         },
-        "filepath": undefined,
+        "filepath": null,
         "handler": [Circular],
         "id": "MySecondModule",
       },
@@ -67,7 +67,7 @@ ProtonModule {
     "user": null,
     "users": Array [],
   },
-  "filepath": undefined,
+  "filepath": null,
   "handler": ProtonHandler {
     "_events": Object {},
     "_eventsCount": 0,

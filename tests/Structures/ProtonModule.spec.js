@@ -27,7 +27,11 @@ test("ProtonModule", () => {
 
     const MySecondModule = new ProtonModule("MySecondModule");
 
-    const [registered, registeredSecond] = [client.handler.register(MyFirstModule, null), client.handler.register(MySecondModule)];
+    client.handler.register(MyFirstModule, null);
+    client.handler.register(MySecondModule, null);
+
+    const registered = client.handler.modules.get("MyFirstModule");
+    const registeredSecond = client.handler.modules.get("MySecondModule");
 
     expect(registered.id).toBe("MyFirstModule");
     expect(registered.category).toBe("Software");
