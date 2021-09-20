@@ -1,6 +1,7 @@
 # Dirs
 node_modules
 tmp
+.vscode
 
 # Files
 yarn.lock
