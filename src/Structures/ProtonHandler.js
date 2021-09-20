@@ -25,7 +25,7 @@ class ProtonHandler extends EventEmitter {
         /** @type {string!} */
         this.directory = options.directory;
 
-        /** @type {Collection<unknown, ProtonModule>} */
+        /** @type {Collection<string, ProtonModule>} */
         this.modules = new Collection();
     }
 
@@ -108,6 +108,72 @@ class ProtonHandler extends EventEmitter {
         for (let i = 0; i < files.length; i++) {
             this.load(files[i]);
         }
+
+        return this;
+    }
+
+    /**
+     * Reloads the module.
+     * @param {string} id - The ID of the module to be reloaded.
+     * @returns {ProtonModule}
+     */
+    reload(id) {
+        // Get module.
+        const mod = this.modules.get(id);
+
+        // If there is no module, throw an error.
+        if (!mod) {
+            throw new Error(`The module with id '${id}' is not in the cache.`);
+        }
+
+        // Deregister module.
+        this.deregister(mod);
+
+        // Reload module.
+        this.load(mod.filepath);
+
+        return mod;
+    }
+
+    /**
+     * Reloads the modules.
+     * @returns {this}
+     */
+    reloadAll() {
+        for (const mod of [...this.modules.values()]) {
+            if (mod.filepath) this.reload(mod.id);
+        }
+
+        return this;
+    }
+
+    /**
+     * Remove the module.
+     * @param {string} id - The ID of the module to be reloaded.
+     * @returns {ProtonModule}
+     */
+    remove(id) {
+        // Get module.
+        const mod = this.modules.get(id);
+
+        // If there is no module, throw an error.
+        if (!mod) {
+            throw new Error(`The module with id '${id}' is not in the cache.`);
+        }
+
+        // Deregister module.
+        this.deregister(mod);
+
+        return mod;
+    }
+
+    /**
+     * Remove the modules.
+     * @returns {this}
+     */
+    removeAll() {
+        for (const id of [...this.modules.keys()])
+            this.remove(id);
 
         return this;
     }

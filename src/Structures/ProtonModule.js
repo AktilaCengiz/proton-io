@@ -35,6 +35,28 @@ class ProtonModule {
          */
         this.filepath = null;
     }
+
+    /**
+     * Reload this module.
+     * @returns {this}
+     */
+    reload() {
+        if (this.handler)
+            this.handler.reload(this.id);
+
+        return this;
+    }
+
+    /**
+     * Remove this module.
+     * @returns {this}
+     */
+    remove() {
+        if (this.handler)
+            this.handler.remove(this.id);
+
+        return this;
+    }
 }
 
 module.exports = ProtonModule;
