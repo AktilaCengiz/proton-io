@@ -4,7 +4,7 @@ class ProtonClient extends Client {
     /**
      *
      * @param {ProtonClientOptions & ClientOptions} options - Options for the ProtonClient.
-     * @param {ClientOptions} clientOptions - Options for the discord.js Client.
+     * @param {ClientOptions} [clientOptions] - Options for the discord.js Client.
      */
     constructor(options, clientOptions) {
         super({ ...options, ...clientOptions });
