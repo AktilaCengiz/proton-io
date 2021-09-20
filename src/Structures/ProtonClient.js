@@ -9,7 +9,7 @@ class ProtonClient extends Client {
     constructor(options, clientOptions) {
         super({ ...options, ...clientOptions });
 
-        /** @type {string|string[]} */
+        /** @type {string|string[]} @private */
         this.owners = options.owners instanceof Array
             ? options.owners
             : [];
