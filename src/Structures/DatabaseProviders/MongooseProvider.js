@@ -17,7 +17,7 @@ class MongooseProvider {
      */
     set(datas) {
         if (typeof datas !== "object") {
-            throw new TypeError("The directory must be a type of object.");
+            throw new TypeError("The datas must be a type of object.");
         }
         this.model.create(datas);
     }
