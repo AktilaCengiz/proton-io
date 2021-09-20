@@ -13,7 +13,8 @@ class Client extends ProtonClient {
         });
 
         this.handler = new ProtonHandler(this, {
-            directory: moduleDir
+            directory: moduleDir,
+            automateCategories: true
         });
     }
 }
@@ -39,7 +40,7 @@ test("load", () => {
 
     const loadedSec = client.handler.load(`${moduleDir}/ExampleModule`);
 
-    expect(loadedSec.category).toBe("default");
+    expect(loadedSec.category).toBe("Modules");
     expect(loadedSec.client).toBe(client);
     expect(loadedSec.handler).toBe(client.handler);
     expect(typeof loadedSec.filepath).toBe("string");
