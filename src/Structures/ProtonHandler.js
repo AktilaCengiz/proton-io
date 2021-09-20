@@ -33,7 +33,7 @@ class ProtonHandler extends EventEmitter {
      * It register the module in the cache.
      * @param {ProtonModule} mod - ProtonModule.
      * @param {?string} [filepath] - File path, if any.
-     * @returns {ProtonModule}
+     * @returns {void}
      */
     register(mod, filepath) {
         // Add the "ProtonClient" property to the module.
@@ -45,14 +45,12 @@ class ProtonHandler extends EventEmitter {
 
         // Add module to cache.
         this.modules.set(mod.id, mod);
-
-        return mod;
     }
 
     /**
      * It deregister the module from the cache.
      * @param {ProtonModule} mod - ProtonModule.
-     * @returns {ProtonModule}
+     * @returns {void}
      */
     deregister(mod) {
         // Delete module from cache.
@@ -61,14 +59,12 @@ class ProtonHandler extends EventEmitter {
         // If filepath is exist delete from require cache
         if (typeof mod.filepath === "string")
             delete require.cache[require.resolve(mod.filepath)];
-
-        return mod;
     }
 
     /**
      * Loads the module.
      * @param {string | Function} fileOrFn - File path or module class.
-     * @returns {boolean}
+     * @returns {ProtonModule?}
      */
     load(fileOrFn) {
         const isFile = typeof fileOrFn === "string";
@@ -82,9 +78,9 @@ class ProtonHandler extends EventEmitter {
         }
 
         // Return if the prototype does not match the ProtonModule.
-        if ((mod.prototype instanceof ProtonModule)) {
+        if (!(mod.prototype instanceof ProtonModule)) {
             if (isFile) delete require.cache[require.resolve(fileOrFn)];
-            return false;
+            return null;
         }
 
         // Create the module.
@@ -93,7 +89,7 @@ class ProtonHandler extends EventEmitter {
         // Register the module.
         this.register(mod, isFile ? fileOrFn : null);
 
-        return true;
+        return mod;
     }
 
     /**
@@ -130,9 +126,7 @@ class ProtonHandler extends EventEmitter {
         this.deregister(mod);
 
         // Reload module.
-        this.load(mod.filepath);
-
-        return mod;
+        return this.load(mod.filepath);
     }
 
     /**
