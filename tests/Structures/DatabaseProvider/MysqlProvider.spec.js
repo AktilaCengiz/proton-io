@@ -12,7 +12,7 @@ const connection = mysql2.createConnection({
 
 // connection.connect();
 const db = new Provider(connection);
-const data = db.getall();
+const data = db.set("aktilacengiz", { name: "ahmet" });
 console.log(data)
 // db.delete("aktilacengiz");
 

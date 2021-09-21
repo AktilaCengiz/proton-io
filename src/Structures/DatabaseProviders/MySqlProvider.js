@@ -42,8 +42,8 @@ class MySqlProvider {
 
     /**
      *
-     * @param {string} id - s
-     * @param {string} defaultValue - s
+     * @param {string} id - Data string key to find.
+     * @param {string} defaultValue - Data string default value to find.
      * @returns
      */
     async get(id, defaultValue = null) {
@@ -58,25 +58,52 @@ class MySqlProvider {
 
     /**
      *
-     * @param {string} id -s
+     * @param {string} id - Data key to delete.
      */
 
     delete(id) {
         const sql = `delete from ${id};`;
         this.connection.query(sql);
     }
+    /**
+     *
+     * @param {string} id -Data key to update.
+     * @param {object} updatedDatas - Data update values to update.
+     */
 
-    // // db.update("aktilacengiz", {name: "hüsamettin", soyad: "s"})
-    // update(id, updatedDatas) {
-    //     const sql = `select datas from ProtonTable where id='${id}';`;
-    //     this.connection.query(sql, (err, data) => {
-    //         if (err) throw err;
-    //         if (data == null) {
-    //             return null;
-    //         }
-    //         const customDatas = JSON.parse(data[0].datas);
-    //     });
-    // }
+    update(id, updatedDatas) {
+        const sql = `select * from ${id};`;
+        // eslint-disable-next-line consistent-return
+        this.connection.query(sql, (err, data) => {
+            if (err) throw err;
+            if (data == null) {
+                return null;
+            }
+            const dist = Object.entries(updatedDatas).map(([name, value]) => ({ name, value }));
+            const changedDatas = [];
+            const changedValue = [];
+            for (let i = 0; i < dist.length; i++) {
+                changedDatas.push(dist[i].name);
+                changedValue.push(dist[i].value);
+            }
+
+            let text = "";
+            if (changedDatas.length === 1) {
+                changedDatas.forEach((m) => {
+                    changedValue.forEach((t) => {
+                        text += ` ${m} = '${t}'  `;
+                    });
+                });
+            } else {
+                for (let i = 0; i < changedDatas.length; i++) {
+                    text += `${changedDatas[i]} = '${changedValue[i]}', `;
+                }
+            }
+
+            const sql2 = `UPDATE ${id} SET ${text.slice(0, (text.length - 2))}`;
+            this.connection.query(sql2);
+        });
+    }
 }
 
 module.exports = MySqlProvider;
