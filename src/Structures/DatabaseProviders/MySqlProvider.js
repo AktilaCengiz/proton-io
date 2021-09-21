@@ -14,6 +14,9 @@ class MySqlProvider {
      */
 
     set(id, savedDatas) {
+        if (typeof id !== "string") {
+            throw new TypeError("The id must be a type of string.");
+        }
         if (typeof savedDatas !== "object") {
             throw new TypeError("The datas must be a type of object.");
         }
@@ -52,6 +55,10 @@ class MySqlProvider {
      * @returns
      */
     async get(id, defaultValue = null) {
+        if (typeof id !== "string") {
+            throw new TypeError("The id must be a type of string.");
+        }
+
         const sql = `select * from ${id};`;
         return new Promise((res, rej) => {
             this.connection.query(sql, (err, data) => {
@@ -67,6 +74,9 @@ class MySqlProvider {
      */
 
     delete(id) {
+        if (typeof id !== "string") {
+            throw new TypeError("The id must be a type of string.");
+        }
         const sql = `delete from ${id};`;
         this.connection.query(sql);
     }
@@ -77,6 +87,12 @@ class MySqlProvider {
      */
 
     update(id, updatedDatas) {
+        if (typeof id !== "string") {
+            throw new TypeError("The id must be a type of string.");
+        }
+        if (typeof updatedDatas !== "object") {
+            throw new TypeError("The id must be a type of object.");
+        }
         const sql = `select * from ${id};`;
         // eslint-disable-next-line consistent-return
         this.connection.query(sql, (err, data) => {
