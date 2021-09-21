@@ -28,6 +28,9 @@ class MongooseProvider {
      * @param {string} defaultValue - default value
      */
     get(objectFetchDatas, defaultValue = null) {
+        if (typeof objectFetchDatas !== "object") {
+            throw new TypeError("The objectFetchDatas must be a type of object.");
+        }
         return new Promise((res, rej) => {
             this.model.findOne(objectFetchDatas, (err, data) => {
                 if (err) rej(err);
@@ -42,6 +45,12 @@ class MongooseProvider {
      * @param {object} updatedDatas - a parameter to update data ordered by map.
      */
     update(objectFetchDatas, updatedDatas) {
+        if (typeof objectFetchDatas !== "object") {
+            throw new TypeError("The objectFetchDatas must be a type of object.");
+        }
+        if (typeof updatedDatas !== "object") {
+            throw new TypeError("The updatedDatas must be a type of object.");
+        }
         this.model.findOneAndUpdate(objectFetchDatas, updatedDatas, (err) => {
             if (err) throw err;
         });
@@ -52,6 +61,9 @@ class MongooseProvider {
      * @param {object} objectFetchDatas - a parameter to find data ordered by map.
     */
     delete(objectFetchDatas) {
+        if (typeof objectFetchDatas !== "object") {
+            throw new TypeError("The objectFetchDatas must be a type of object.");
+        }
         this.model.findOneAndDelete(objectFetchDatas, (err) => {
             if (err) throw err;
         });
