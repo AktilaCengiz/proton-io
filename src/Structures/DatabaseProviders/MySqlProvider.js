@@ -1,3 +1,8 @@
+/**
+* Provider using the `MySql2` library.
+* @param {any} connection - A mysql connection.
+*/
+
 class MySqlProvider {
     constructor(connection) {
         this.connection = connection;
