@@ -18,6 +18,7 @@ ProtonModule {
     "_events": Object {},
     "_eventsCount": 0,
     "_maxListeners": undefined,
+    "automateCategories": false,
     "client": Object {
       "application": null,
       "channels": Array [],
@@ -72,6 +73,7 @@ ProtonModule {
     "_events": Object {},
     "_eventsCount": 0,
     "_maxListeners": undefined,
+    "automateCategories": false,
     "client": Object {
       "application": null,
       "channels": Array [],
