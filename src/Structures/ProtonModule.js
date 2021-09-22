@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+
 class ProtonModule {
     /**
      *
@@ -34,6 +36,14 @@ class ProtonModule {
          * @type {string?}
          */
         this.filepath = null;
+    }
+
+    /**
+     * @abstract
+     * @returns {*}
+     */
+    execute() {
+        throw new Error("This method is a abstract.");
     }
 
     /**
