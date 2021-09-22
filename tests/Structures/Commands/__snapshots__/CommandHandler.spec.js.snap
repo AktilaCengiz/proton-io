@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`properties 1`] = `
+CommandHandler {
+  "_events": Object {},
+  "_eventsCount": 0,
+  "_maxListeners": undefined,
+  "automateCategories": true,
+  "client": Object {
+    "application": null,
+    "channels": Array [],
+    "guilds": Array [],
+    "owners": Array [],
+    "presence": undefined,
+    "shard": null,
+    "user": null,
+    "users": Array [],
+  },
+  "defaultCooldown": 10000,
+  "directory": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Commands/CommandModules",
+  "ignoreBots": true,
+  "ignoreSelf": true,
+  "modules": Array [
+    Object {
+      "advancedArgs": false,
+      "aliases": null,
+      "args": null,
+      "botPermissions": null,
+      "category": "Users",
+      "client": Object {
+        "application": null,
+        "channels": Array [],
+        "guilds": Array [],
+        "owners": Array [],
+        "presence": undefined,
+        "shard": null,
+        "user": null,
+        "users": Array [],
+      },
+      "cooldown": null,
+      "filepath": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Commands/CommandModules/PingCommand.js",
+      "handler": [Circular],
+      "id": "Ping",
+      "information": null,
+      "ownerOnly": false,
+      "userPermissions": null,
+      "whereRunning": null,
+    },
+  ],
+  "prefix": "?",
+  Symbol(kCapture): false,
+}
+`;
