@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Example 1`] = `
+Command {
+  "advancedArgs": true,
+  "aliases": Array [
+    "example",
+  ],
+  "args": Array [],
+  "botPermissions": Array [],
+  "category": "default",
+  "client": null,
+  "cooldown": 10000,
+  "filepath": null,
+  "handler": null,
+  "id": "Example",
+  "information": Object {},
+  "ownerOnly": true,
+  "userPermissions": Array [],
+  "whereRunning": "guild",
+}
+`;
+
+exports[`Null props 1`] = `
+Command {
+  "advancedArgs": false,
+  "aliases": null,
+  "args": null,
+  "botPermissions": null,
+  "category": "default",
+  "client": null,
+  "cooldown": null,
+  "filepath": null,
+  "handler": null,
+  "id": "NullProps",
+  "information": null,
+  "ownerOnly": false,
+  "userPermissions": null,
+  "whereRunning": null,
+}
+`;
