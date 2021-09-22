@@ -17,6 +17,7 @@ class ProtonHandler extends EventEmitter {
     constructor(client, options = {}) {
         super();
 
+        /** @type {ProtonClient} */
         this.client = client;
 
         if (typeof options.directory !== "string") {
