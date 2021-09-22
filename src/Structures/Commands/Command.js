@@ -20,7 +20,7 @@ class Command extends ProtonModule {
             : null;
 
         /** @type {boolean!} */
-        this.ownerOnly = typeof options.aliases === "boolean"
+        this.ownerOnly = typeof options.ownerOnly === "boolean"
             ? options.ownerOnly
             : false;
 
