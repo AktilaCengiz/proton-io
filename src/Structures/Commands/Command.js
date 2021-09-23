@@ -50,8 +50,8 @@ class Command extends ProtonModule {
             : null;
 
         /** @type {(PermissionString | PermissionString[])?} */
-        this.botPermissions = typeof options.botPermissions === "string" || options.botPermissions instanceof Array
-            ? options.botPermissions
+        this.clientPermissions = typeof options.clientPermissions === "string" || options.clientPermissions instanceof Array
+            ? options.clientPermissions
             : null;
     }
 }
@@ -68,7 +68,7 @@ module.exports = Command;
  * @property {object} [information=null] - Command information object.
  * @property {WhereRunning} [whereRunning=null] - Where to run the command.
  * @property {PermissionString | PermissionString[]} [userPermissions=null] - Required permission(s) for the user to use the command.
- * @property {PermissionString | PermissionString[]} [botPermissions=null] - Required client permission(s) for the command.
+ * @property {PermissionString | PermissionString[]} [clientPermissions=null] - Required client permission(s) for the command.
  */
 
 /**

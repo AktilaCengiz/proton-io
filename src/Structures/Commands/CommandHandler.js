@@ -137,17 +137,12 @@ class CommandHandler extends ProtonHandler {
         }
 
         // Check client permission.
-        if (command.botPermissions instanceof Array || typeof command.botPermissions === "string") {
-            if (!message.guild.me.permissions.has(command.botPermissions))
+        if (command.clientPermissions instanceof Array || typeof command.clientPermissions === "string") {
+            if (!message.guild.me.permissions.has(command.clientPermissions))
                 return;
         }
 
-        // Run async
-        if (isAsync(command.execute)) {
-            await command.execute(message);
-        } else {
-            command.execute(message);
-        }
+        await command.execute(message);
     }
 }
 
