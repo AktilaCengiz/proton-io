@@ -39,13 +39,6 @@ class Command extends ProtonModule {
             ? options.information
             : null;
 
-        /** @type {WhereRunning?} */
-        this.whereRunning = typeof options.whereRunning === "string" || typeof options.whereRunning === "function"
-            ? typeof options.whereRunning === "function"
-                ? options.whereRunning.bind(this)
-                : options.whereRunning
-            : null;
-
         /** @type {(PermissionString | PermissionString[])?} */
         this.userPermissions = typeof options.userPermissions === "string" || options.userPermissions instanceof Array
             ? options.userPermissions
@@ -73,7 +66,6 @@ module.exports = Command;
  * @property {boolean} [advancedArgs=true] - Whether to use the advanced argument system.
  * @property {number} [cooldown=null] - Command cooldown.
  * @property {object} [information=null] - Command information object.
- * @property {WhereRunning} [whereRunning=null] - Where to run the command.
  * @property {PermissionString | PermissionString[]} [userPermissions=null] - Required permission(s) for the user to use the command.
  * @property {PermissionString | PermissionString[]} [clientPermissions=null] - Required client permission(s) for the command.
  * @property {boolean} [executable=true] - Whether the command is executable.
@@ -83,8 +75,4 @@ module.exports = Command;
  * @typedef {import("../ProtonModule").ProtonModuleOptions} ProtonModuleOptions
  * @typedef {import("discord.js").Message} Message
  * @typedef {import("discord.js").PermissionString} PermissionString
- */
-
-/**
- * @typedef {"dmChannel" | "guild" | {(message:Message): unknown}} WhereRunning
  */

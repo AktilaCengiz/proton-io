@@ -18,7 +18,6 @@ Command {
   "information": Object {},
   "ownerOnly": true,
   "userPermissions": Array [],
-  "whereRunning": "guild",
 }
 `;
 
@@ -38,6 +37,5 @@ Command {
   "information": null,
   "ownerOnly": false,
   "userPermissions": null,
-  "whereRunning": null,
 }
 `;

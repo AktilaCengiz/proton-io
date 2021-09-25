@@ -48,7 +48,6 @@ CommandHandler {
       "information": null,
       "ownerOnly": false,
       "userPermissions": null,
-      "whereRunning": null,
     },
   ],
   "prefix": "?",

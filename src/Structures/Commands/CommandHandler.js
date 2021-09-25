@@ -130,22 +130,6 @@ class CommandHandler extends ProtonHandler {
             return;
         }
 
-        // Check where to run
-        if (typeof command.whereRunning === "string" || typeof command.whereRunning === "function") {
-            if (typeof command.whereRunning === "function") {
-                const result = isAsync(command.whereRunning)
-                    ? await command.whereRunning(message)
-                    : command.whereRunning(message);
-
-                if (result !== null)
-                    return;
-            } else if (command.whereRunning === "guild") {
-                if (!message.guild) return;
-            } else if (command.whereRunning === "dmChannel") {
-                if (message.guild && message.channel.type !== "DM") return;
-            }
-        }
-
         // Check member permission(s).
         if (command.userPermissions instanceof Array || typeof command.userPermissions === "string") {
             if (!message.member.permissions.has(command.userPermissions)) {

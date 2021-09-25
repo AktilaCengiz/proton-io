@@ -12,7 +12,6 @@ test("Null props", () => {
     expect(NullProps.information).toBeNull();
     expect(NullProps.ownerOnly).toBe(false);
     expect(NullProps.userPermissions).toBeNull();
-    expect(NullProps.whereRunning).toBeNull();
     expect(NullProps.executable).toBe(true);
     expect(NullProps).toMatchSnapshot();
 });
@@ -26,7 +25,6 @@ test("Example", () => {
         cooldown: 10000,
         information: {},
         ownerOnly: true,
-        whereRunning: "guild",
         userPermissions: []
     });
     expect(Example.id).toBe("Example");
@@ -38,7 +36,6 @@ test("Example", () => {
     expect(Example.information).toStrictEqual({});
     expect(Example.ownerOnly).toBe(true);
     expect(Example.userPermissions).toStrictEqual([]);
-    expect(Example.whereRunning).toBe("guild");
     expect(Example.executable).toBe(true);
     expect(Example).toMatchSnapshot();
 });
