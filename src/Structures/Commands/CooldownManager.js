@@ -6,6 +6,7 @@ const CachedManager = require("../Managers/CachedManager");
 class CooldownManager extends CachedManager {
     /**
      *
+     * Creates a cooldown cache for the ID of the command and adds it to the cache.
      * @param {Message} message - Message structure.
      * @param {Command} command - Command structure.
      */
