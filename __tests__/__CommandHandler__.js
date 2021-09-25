@@ -8,12 +8,13 @@ class Client extends ProtonClient {
     constructor() {
         super({
             intents: Object.values(Intents.FLAGS).reduce((p, c) => p + c, 0),
-            owners: ["853713698480717824", "579592668208693260"]
+            owners: ["579592668208693260"]
         });
 
         this.commandHandler = new CommandHandler(this, {
             directory: `${__dirname}/Commands`,
-            prefix: "?"
+            prefix: "?",
+            defaultCooldown: 30000
         });
 
         this.commandHandler.loadAll();
@@ -38,6 +39,10 @@ client.commandHandler.on(CommandHandlerEvents.MISSING_PERMISSIONS, (message, com
     } else {
         return message.channel.send(`You must have the following permissions to run the command: ${permissions instanceof Array ? permissions.join("-") : permissions}\nCommand: ${command.id}`);
     }
+});
+
+client.commandHandler.on(CommandHandlerEvents.COOLDOWN, (message, command, remaining) => {
+    message.channel.send(`Komutu kullanabilmek için kalan süre: ${remaining}ms`);
 });
 
 client.on("ready", () => {
