@@ -5,6 +5,9 @@ CommandHandler {
   "_events": Object {},
   "_eventsCount": 0,
   "_maxListeners": undefined,
+  "aliasManager": AliasManager {
+    "cache": Array [],
+  },
   "automateCategories": true,
   "client": Object {
     "application": null,
@@ -25,7 +28,6 @@ CommandHandler {
       "advancedArgs": false,
       "aliases": null,
       "args": null,
-      "botPermissions": null,
       "category": "Users",
       "client": Object {
         "application": null,
@@ -37,8 +39,10 @@ CommandHandler {
         "user": null,
         "users": Array [],
       },
+      "clientPermissions": null,
       "cooldown": null,
-      "filepath": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Commands/CommandModules/PingCommand.js",
+      "executable": true,
+      "filepath": null,
       "handler": [Circular],
       "id": "Ping",
       "information": null,
