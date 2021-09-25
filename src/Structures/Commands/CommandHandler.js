@@ -2,6 +2,7 @@ const { CommandHandlerEvents } = require("../../Utils/Constants");
 const isAsync = require("../../Utils/isAsync");
 const ProtonHandler = require("../ProtonHandler");
 const AliasManager = require("./AliasManager");
+const CooldownManager = require("./CooldownManager");
 
 class CommandHandler extends ProtonHandler {
     /**
@@ -36,6 +37,9 @@ class CommandHandler extends ProtonHandler {
 
         /** @type {AliasManager} */
         this.aliasManager = new AliasManager();
+
+        /** @type {CooldownManager} */
+        this.cooldownManager = new CooldownManager(this.defaultCooldown);
 
         this.init();
     }
@@ -104,9 +108,45 @@ class CommandHandler extends ProtonHandler {
                 : this.prefix(message);
         }
 
+        const { isOwner } = {
+            isOwner: this.client.isOwner(message.author.id)
+        };
+
         if (typeof prefix !== "string" || !message.content.startsWith(prefix))
             return;
 
+        const { args, command } = this._parse(message, prefix);
+
+        if (!command) return;
+
+        // If not executable, return.
+        if (!command.executable) {
+            this.emit(CommandHandlerEvents.COMMAND_NOT_EXECUTABLE, message, command);
+            return;
+        }
+
+        // Permissions
+        if (!this._checkPermissions(message, command, { isOwner }))
+            return;
+
+        // Cooldown
+        if (!isOwner) {
+            if (this.cooldownManager.checkExist(message, command)) {
+                const remaining = this.cooldownManager.cache.get(message.author.id) - Date.now();
+                this.emit(CommandHandlerEvents.COOLDOWN, message, command, remaining);
+                return;
+            }
+        }
+        await command.execute(message);
+    }
+
+    /**
+     *
+     * @param {Message} message - Message structure.
+     * @param {string} prefix - Prefix .
+     * @returns {{ args: string[], command?: Command}}
+     */
+    _parse(message, prefix) {
         // Parse message content.
         const [cmdName, ...args] = message.content.slice(prefix.length).split(/\s/g);
 
@@ -115,26 +155,35 @@ class CommandHandler extends ProtonHandler {
 
         if (!command) {
             this.emit(CommandHandlerEvents.COΜMAND_NOT_FOUND, message, cmdName);
-            return;
+            return {
+                args,
+                command: null
+            };
         }
+        return {
+            args,
+            command
+        };
+    }
 
-        // If not executable, return.
-        if (!command.executable) {
-            this.emit(CommandHandlerEvents.COMMAND_NOT_EXECUTABLE, message, command);
-            return;
-        }
-
+    /**
+     * @param {Message} message - Message structure.
+     * @param {Command} command - Command structure.
+     * @param {object} others - Other params
+     * @returns {boolean}
+     */
+    _checkPermissions(message, command, others) {
         // Check if owner specific.
-        if (command.ownerOnly && !this.client.isOwner(message.author)) {
+        if (command.ownerOnly && others.isOwner) {
             this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, false);
-            return;
+            return false;
         }
 
         // Check member permission(s).
         if (command.userPermissions instanceof Array || typeof command.userPermissions === "string") {
             if (!message.member.permissions.has(command.userPermissions)) {
                 this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, false);
-                return;
+                return false;
             }
         }
 
@@ -142,11 +191,11 @@ class CommandHandler extends ProtonHandler {
         if (command.clientPermissions instanceof Array || typeof command.clientPermissions === "string") {
             if (!message.guild.me.permissions.has(command.clientPermissions)) {
                 this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, true);
-                return;
+                return false;
             }
         }
 
-        await command.execute(message);
+        return true;
     }
 }
 

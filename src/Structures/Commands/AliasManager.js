@@ -3,7 +3,7 @@
 const CachedManager = require("../Managers/CachedManager");
 
 /**
- * @extends {CachedManager<string,string>}
+ * @extends {CachedManager<string, string>}
  */
 class AliasManager extends CachedManager {
     /**
