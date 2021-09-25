@@ -41,7 +41,9 @@ class Command extends ProtonModule {
 
         /** @type {WhereRunning?} */
         this.whereRunning = typeof options.whereRunning === "string" || typeof options.whereRunning === "function"
-            ? options.whereRunning
+            ? typeof options.whereRunning === "function"
+                ? options.whereRunning.bind(this)
+                : options.whereRunning
             : null;
 
         /** @type {(PermissionString | PermissionString[])?} */
@@ -53,6 +55,11 @@ class Command extends ProtonModule {
         this.clientPermissions = typeof options.clientPermissions === "string" || options.clientPermissions instanceof Array
             ? options.clientPermissions
             : null;
+
+        /** @type {boolean} */
+        this.executable = typeof options.executable === "boolean"
+            ? options.executable
+            : true;
     }
 }
 
@@ -69,6 +76,7 @@ module.exports = Command;
  * @property {WhereRunning} [whereRunning=null] - Where to run the command.
  * @property {PermissionString | PermissionString[]} [userPermissions=null] - Required permission(s) for the user to use the command.
  * @property {PermissionString | PermissionString[]} [clientPermissions=null] - Required client permission(s) for the command.
+ * @property {boolean} [executable=true] - Whether the command is executable.
  */
 
 /**
