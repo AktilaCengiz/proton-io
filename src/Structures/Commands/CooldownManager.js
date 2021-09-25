@@ -1,46 +1,32 @@
 const CachedManager = require("../Managers/CachedManager");
 
 /**
- * @extends {CachedManager<string, number>}
+ * @extends {CachedManager<string, CachedManager>}
  */
 class CooldownManager extends CachedManager {
     /**
      *
-     * @param {number} defaultCooldown
-     */
-    constructor(defaultCooldown) {
-        super();
-
-        this.defaultCooldown = defaultCooldown;
-    }
-
-    /**
      * @param {Message} message - Message structure.
      * @param {Command} command - Command structure.
      */
-    addToCache(message, command) {
-        const cooldownTimeout = command.cooldown ?? this.defaultCooldown;
+    add(message, command) {
+        const { cooldown } = command;
 
-        if (cooldownTimeout === null)
+        if (cooldown === null)
             return;
 
-        super.register(message.author.id, Date.now() + cooldownTimeout);
+        /** @type {CachedManager<string, number>} */
+        const commandCooldownCache = new CachedManager();
+        commandCooldownCache.register(message.author.id, Date.now() + cooldown);
 
-        setTimeout(() => this.deregister(message.author.id), cooldownTimeout);
-    }
+        super.register(command.id, commandCooldownCache);
 
-    /**
-     *
-     * @param {Message} message - Message structure.
-     * @param {Command} command - Command structure.
-     * @returns
-     */
-    checkExist(message, command) {
-        if (!this.cache.has(message.author.id)) {
-            this.addToCache(message, command);
-            return false;
-        }
-        return true;
+        setTimeout(() => {
+            commandCooldownCache.deregister(message.author.id);
+
+            if (commandCooldownCache.cache.size === 0)
+                super.deregister(command.id);
+        }, cooldown);
     }
 }
 
