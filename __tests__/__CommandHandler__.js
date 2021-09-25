@@ -42,7 +42,7 @@ client.commandHandler.on(CommandHandlerEvents.MISSING_PERMISSIONS, (message, com
 });
 
 client.commandHandler.on(CommandHandlerEvents.COOLDOWN, (message, command, remaining) => {
-    message.channel.send(`Komutu kullanabilmek için kalan süre: ${remaining}ms`);
+    message.channel.send(`Time remaining to use the command: ${remaining}ms`);
 });
 
 client.on("ready", () => {
