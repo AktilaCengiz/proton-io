@@ -59,6 +59,9 @@ class CommandHandler extends ProtonHandler {
             } else
                 this.aliasManager.register(mod.aliases, mod.id);
         }
+
+        if (typeof mod.cooldown !== "number")
+            mod.cooldown = this.defaultCooldown;
     }
 
     /**
@@ -131,8 +134,15 @@ class CommandHandler extends ProtonHandler {
 
         // Cooldown
         if (!isOwner) {
-            if (this.cooldownManager.checkExist(message, command)) {
-                const remaining = this.cooldownManager.cache.get(message.author.id) - Date.now();
+            // The command's cooldown cache.
+            const commandCooldown = this.cooldownManager.cache.get(command.id);
+
+            // If not exist, register
+            if (!commandCooldown) {
+                this.cooldownManager.add(message, command);
+            } else if (commandCooldown.cache.has(message.author.id)) {
+                // Remaining time.
+                const remaining = commandCooldown.cache.get(message.author.id) - Date.now();
                 this.emit(CommandHandlerEvents.COOLDOWN, message, command, remaining);
                 return;
             }
