@@ -1,3 +1,4 @@
+const { CommandHandlerEvents } = require("../../Utils/Constants");
 const isAsync = require("../../Utils/isAsync");
 const ProtonHandler = require("../ProtonHandler");
 const AliasManager = require("./AliasManager");
@@ -13,7 +14,9 @@ class CommandHandler extends ProtonHandler {
 
         /** @type {(string | PrefixBuilder)!} */
         this.prefix = typeof options.prefix === "string" || typeof options.prefix === "function"
-            ? options.prefix
+            ? typeof options.prefix === "function"
+                ? options.prefix.bind(this)
+                : options.prefix
             : "!";
 
         /** @type {boolean} */
@@ -31,6 +34,7 @@ class CommandHandler extends ProtonHandler {
             ? options.defaultCooldown
             : null;
 
+        /** @type {AliasManager} */
         this.aliasManager = new AliasManager();
 
         this.init();
@@ -109,10 +113,22 @@ class CommandHandler extends ProtonHandler {
         /** @type {*} */
         const command = this.modules.get(this.aliasManager.cache.get(cmdName));
 
-        if (!command) return;
+        if (!command) {
+            this.emit(CommandHandlerEvents.COΜMAND_NOT_FOUND, message, cmdName);
+            return;
+        }
+
+        // If not executable, return.
+        if (!command.executable) {
+            this.emit(CommandHandlerEvents.COMMAND_NOT_EXECUTABLE, message, command);
+            return;
+        }
 
         // Check if owner specific.
-        if (command.ownerOnly && !this.client.isOwner(message.author)) return;
+        if (command.ownerOnly && !this.client.isOwner(message.author)) {
+            this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, false);
+            return;
+        }
 
         // Check where to run
         if (typeof command.whereRunning === "string" || typeof command.whereRunning === "function") {
@@ -132,14 +148,18 @@ class CommandHandler extends ProtonHandler {
 
         // Check member permission(s).
         if (command.userPermissions instanceof Array || typeof command.userPermissions === "string") {
-            if (!message.member.permissions.has(command.userPermissions))
+            if (!message.member.permissions.has(command.userPermissions)) {
+                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, false);
                 return;
+            }
         }
 
         // Check client permission.
         if (command.clientPermissions instanceof Array || typeof command.clientPermissions === "string") {
-            if (!message.guild.me.permissions.has(command.clientPermissions))
+            if (!message.guild.me.permissions.has(command.clientPermissions)) {
+                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, true);
                 return;
+            }
         }
 
         await command.execute(message);
