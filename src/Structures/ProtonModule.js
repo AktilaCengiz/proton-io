@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 
 class ProtonModule {
@@ -39,10 +40,11 @@ class ProtonModule {
     }
 
     /**
+     * @param {...unknown} args
      * @abstract
      * @returns {*}
      */
-    execute() {
+    execute(...args) {
         throw new Error("This method is a abstract.");
     }
 
