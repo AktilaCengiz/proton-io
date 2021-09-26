@@ -24,7 +24,7 @@ class Command extends ProtonModule {
             ? options.ownerOnly
             : false;
 
-        /** @type {boolean!} */
+        /** @type {boolean?} */
         this.advancedArgs = typeof options.advancedArgs === "boolean"
             ? options.advancedArgs
             : null;
@@ -49,7 +49,7 @@ class Command extends ProtonModule {
             ? options.clientPermissions
             : null;
 
-        /** @type {boolean} */
+        /** @type {boolean!} */
         this.executable = typeof options.executable === "boolean"
             ? options.executable
             : true;

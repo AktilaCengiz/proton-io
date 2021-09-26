@@ -20,12 +20,12 @@ class CommandHandler extends ProtonHandler {
                 : options.prefix
             : "!";
 
-        /** @type {boolean} */
+        /** @type {boolean!} */
         this.ignoreSelf = typeof options.ignoreSelf === "boolean"
             ? options.ignoreSelf
             : true;
 
-        /** @type {boolean} */
+        /** @type {boolean!} */
         this.ignoreBots = typeof options.ignoreBots === "boolean"
             ? options.ignoreBots
             : true;
@@ -40,10 +40,15 @@ class CommandHandler extends ProtonHandler {
             ? options.defaultRateLimit
             : null;
 
-        /** @type {boolean} */
+        /** @type {boolean!} */
         this.defaultTyping = typeof options.defaultTyping === "boolean"
             ? options.defaultTyping
-            : true;
+            : false;
+
+        /** @type {boolean!} */
+        this.defaultAdvancedArgs = typeof options.defaultAdvancedArgs === "boolean"
+            ? options.defaultAdvancedArgs
+            : false;
 
         /** @type {AliasManager} */
         this.aliasManager = new AliasManager();
@@ -78,6 +83,9 @@ class CommandHandler extends ProtonHandler {
 
         if (typeof mod.typing !== "boolean")
             mod.typing = this.defaultTyping;
+
+        if (typeof mod.advancedArgs !== "boolean")
+            mod.advancedArgs = this.defaultAdvancedArgs;
     }
 
     /**
@@ -282,6 +290,7 @@ module.exports = CommandHandler;
  * @property {number} [defaultCooldown=null] - Default cooldown for commands.
  * @property {number} [defaultRateLimit=null] - Default ratelimit for commands.
  * @property {boolean} [defaultTyping=false] - Whether or not to type during command execution.
+ * @property {boolean} [defaultAdvancedArgs=false] - Whether to use the advanced argument system.
  */
 
 /**
