@@ -39,14 +39,22 @@ class Command extends ProtonModule {
             ? options.information
             : null;
 
-        /** @type {(PermissionString | PermissionString[])?} */
-        this.userPermissions = typeof options.userPermissions === "string" || options.userPermissions instanceof Array
-            ? options.userPermissions
+        /** @type {(PermissionString | PermissionString[] | PermissionsRouter)?} */
+        this.userPermissions = typeof options.userPermissions === "string"
+            || typeof options.userPermissions === "function"
+            || options.userPermissions instanceof Array
+            ? typeof options.userPermissions === "function"
+                ? options.userPermissions.bind(this)
+                : options.userPermissions
             : null;
 
-        /** @type {(PermissionString | PermissionString[])?} */
-        this.clientPermissions = typeof options.clientPermissions === "string" || options.clientPermissions instanceof Array
-            ? options.clientPermissions
+        /** @type {(PermissionString | PermissionString[] | PermissionsRouter)?} */
+        this.clientPermissions = typeof options.clientPermissions === "string"
+            || typeof options.clientPermissions === "function"
+            || options.clientPermissions instanceof Array
+            ? typeof options.clientPermissions === "function"
+                ? options.clientPermissions.bind(this)
+                : options.clientPermissions
             : null;
 
         /** @type {boolean!} */
@@ -76,8 +84,8 @@ module.exports = Command;
  * @property {boolean} [advancedArgs=true] - Whether to use the advanced argument system.
  * @property {number} [cooldown=null] - Command cooldown.
  * @property {object} [information=null] - Command information object.
- * @property {PermissionString | PermissionString[]} [userPermissions=null] - Required permission(s) for the user to use the command.
- * @property {PermissionString | PermissionString[]} [clientPermissions=null] - Required client permission(s) for the command.
+ * @property {PermissionString | PermissionString[] | PermissionsRouter} [userPermissions=null] - Required permission(s) for the user to use the command.
+ * @property {PermissionString | PermissionString[] | PermissionsRouter} [clientPermissions=null] - Required client permission(s) for the command.
  * @property {boolean} [executable=true] - Whether the command is executable.
  * @property {number} [rateLimit=null] - Uses allowed before cooldown.
  * @property {boolean} [typing=null] - Whether or not to type during command execution.
@@ -87,4 +95,8 @@ module.exports = Command;
  * @typedef {import("../ProtonModule").ProtonModuleOptions} ProtonModuleOptions
  * @typedef {import("discord.js").Message} Message
  * @typedef {import("discord.js").PermissionString} PermissionString
+ */
+
+/**
+ * @typedef {{ (message:Message): unknown } } PermissionsRouter
  */

@@ -153,7 +153,7 @@ class CommandHandler extends ProtonHandler {
         }
 
         // Permissions
-        if (!this._checkPermissions(message, command, { isOwner }))
+        if (!await this._checkPermissions(message, command, { isOwner }))
             return;
 
         // Cooldown
@@ -251,27 +251,51 @@ class CommandHandler extends ProtonHandler {
      * @param {Message} message - Message structure.
      * @param {Command} command - Command structure.
      * @param {object} others - Other params
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
-    _checkPermissions(message, command, others) {
+    async _checkPermissions(message, command, { isOwner }) {
         // Check if owner specific.
-        if (command.ownerOnly && others.isOwner) {
+        if (command.ownerOnly && !isOwner) {
             this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, false);
             return false;
         }
 
         // Check member permission(s).
-        if (command.userPermissions instanceof Array || typeof command.userPermissions === "string") {
-            if (!message.member.permissions.has(command.userPermissions)) {
-                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, false);
+        if (command.userPermissions !== null) {
+            let authorized = true;
+            if (typeof command.userPermissions === "function") {
+                const result = isAsync(command.userPermissions)
+                    ? await command.userPermissions(message)
+                    : command.userPermissions(message);
+                if (result !== null)
+                    authorized = false;
+            } else if (typeof command.userPermissions === "string" || command.userPermissions instanceof Array) {
+                if (!message.member.permissions.has(command.userPermissions))
+                    authorized = false;
+            }
+
+            if (!authorized) {
+                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, false);
                 return false;
             }
         }
 
-        // Check client permission.
-        if (command.clientPermissions instanceof Array || typeof command.clientPermissions === "string") {
-            if (!message.guild.me.permissions.has(command.clientPermissions)) {
-                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, true);
+        // Check client permission(s).
+        if (command.clientPermissions !== null) {
+            let runnable = true;
+            if (typeof command.clientPermissions === "function") {
+                const result = isAsync(command.clientPermissions)
+                    ? await command.clientPermissions(message)
+                    : command.clientPermissions(message);
+                if (result !== null)
+                    runnable = false;
+            } else if (typeof command.clientPermissions === "string" || command.clientPermissions instanceof Array) {
+                if (!message.guild.me.permissions.has(command.clientPermissions))
+                    runnable = false;
+            }
+
+            if (!runnable) {
+                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, true);
                 return false;
             }
         }
