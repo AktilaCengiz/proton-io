@@ -13,8 +13,7 @@ class Client extends ProtonClient {
 
         this.commandHandler = new CommandHandler(this, {
             directory: `${__dirname}/Commands`,
-            prefix: "?",
-            defaultCooldown: 30000
+            prefix: "?"
         });
 
         this.commandHandler.loadAll();
@@ -39,6 +38,10 @@ client.commandHandler.on(CommandHandlerEvents.MISSING_PERMISSIONS, (message, com
     } else {
         return message.channel.send(`You must have the following permissions to run the command: ${permissions instanceof Array ? permissions.join("-") : permissions}\nCommand: ${command.id}`);
     }
+});
+
+client.on("messageCreate", () => {
+    console.log(client.commandHandler.cooldownManager);
 });
 
 client.commandHandler.on(CommandHandlerEvents.COOLDOWN, (message, command, remaining) => {

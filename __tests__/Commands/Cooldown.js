@@ -4,7 +4,8 @@ module.exports = class extends Command {
     constructor() {
         super("Cooldown", {
             aliases: ["cooldown"],
-            cooldown: 10000
+            cooldown: 30000,
+            rateLimit: 5
         });
     }
 
