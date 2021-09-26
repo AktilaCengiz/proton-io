@@ -50,6 +50,24 @@ class CommandHandler extends ProtonHandler {
             ? options.defaultAdvancedArgs
             : false;
 
+        /** @type {(PermissionString | PermissionString[] | PermissionsRouter)?} */
+        this.defaultUserPermissions = typeof options.defaultUserPermissions === "string"
+            || typeof options.defaultUserPermissions === "function"
+            || options.defaultUserPermissions instanceof Array
+            ? typeof options.defaultUserPermissions === "function"
+                ? options.defaultUserPermissions.bind(this)
+                : options.defaultUserPermissions
+            : null;
+
+        /** @type {(PermissionString | PermissionString[] | PermissionsRouter)?} */
+        this.defaultClientPermissions = typeof options.defaultClientPermissions === "string"
+            || typeof options.defaultClientPermissions === "function"
+            || options.defaultClientPermissions instanceof Array
+            ? typeof options.defaultClientPermissions === "function"
+                ? options.defaultClientPermissions.bind(this)
+                : options.defaultClientPermissions
+            : null;
+
         /** @type {AliasManager} */
         this.aliasManager = new AliasManager();
 
@@ -86,6 +104,12 @@ class CommandHandler extends ProtonHandler {
 
         if (typeof mod.advancedArgs !== "boolean")
             mod.advancedArgs = this.defaultAdvancedArgs;
+
+        if (mod.userPermissions === null)
+            mod.userPermissions = this.defaultUserPermissions;
+
+        if (mod.clientPermissions === null)
+            mod.clientPermissions = this.defaultClientPermissions;
     }
 
     /**
@@ -256,7 +280,7 @@ class CommandHandler extends ProtonHandler {
     async _checkPermissions(message, command, { isOwner }) {
         // Check if owner specific.
         if (command.ownerOnly && !isOwner) {
-            this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, command.userPermissions, command.ownerOnly, false);
+            this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, false);
             return false;
         }
 
@@ -315,6 +339,8 @@ module.exports = CommandHandler;
  * @property {number} [defaultRateLimit=null] - Default ratelimit for commands.
  * @property {boolean} [defaultTyping=false] - Whether or not to type during command execution.
  * @property {boolean} [defaultAdvancedArgs=false] - Whether to use the advanced argument system.
+ * @property {PermissionString | PermissionString[] | PermissionsRouter} [defaultUserPermissions=null] - Required permission(s) for the user to use the command.
+ * @property {PermissionString | PermissionString[] | PermissionsRouter} [defaultClientPermissions=null] - Required client permission(s) for the command.
  */
 
 /**
@@ -322,6 +348,8 @@ module.exports = CommandHandler;
  * @typedef {import("./Command")} Command
  * @typedef {import("../ProtonClient")} ProtonClient
  * @typedef {import("../ProtonHandler").ProtonHandlerOptions} ProtonHandlerOptions
+ * @typedef {import("discord.js").PermissionString} PermissionString
+ * @typedef {import("./Command").PermissionsRouter} PermissionsRouter
  */
 
 /**
