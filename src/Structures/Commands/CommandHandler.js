@@ -41,8 +41,8 @@ class CommandHandler extends ProtonHandler {
             : null;
 
         /** @type {boolean} */
-        this.typing = typeof options.typing === "boolean"
-            ? options.typing
+        this.defaultTyping = typeof options.defaultTyping === "boolean"
+            ? options.defaultTyping
             : true;
 
         /** @type {AliasManager} */
@@ -77,7 +77,7 @@ class CommandHandler extends ProtonHandler {
             mod.rateLimit = this.defaultRateLimit;
 
         if (typeof mod.typing !== "boolean")
-            mod.typing = this.typing;
+            mod.typing = this.defaultTyping;
     }
 
     /**
@@ -281,7 +281,7 @@ module.exports = CommandHandler;
  * @property {boolean} [ignoreBots=true] - Whether the client ignores bots.
  * @property {number} [defaultCooldown=null] - Default cooldown for commands.
  * @property {number} [defaultRateLimit=null] - Default ratelimit for commands.
- * @property {boolean} [typing=false] - Whether or not to type during command execution.
+ * @property {boolean} [defaultTyping=false] - Whether or not to type during command execution.
  */
 
 /**
