@@ -4,7 +4,7 @@ const Command = require("../../../src/Structures/Commands/Command");
 test("Null props", () => {
     const NullProps = new Command("NullProps");
     expect(NullProps.id).toBe("NullProps");
-    expect(NullProps.advancedArgs).toBe(false);
+    expect(NullProps.advancedArgs).toBe(null);
     expect(NullProps.aliases).toBeNull();
     expect(NullProps.args).toBeNull();
     expect(NullProps.clientPermissions).toBeNull();

@@ -17,13 +17,15 @@ Command {
   "id": "Example",
   "information": Object {},
   "ownerOnly": true,
+  "rateLimit": null,
+  "typing": null,
   "userPermissions": Array [],
 }
 `;
 
 exports[`Null props 1`] = `
 Command {
-  "advancedArgs": false,
+  "advancedArgs": null,
   "aliases": null,
   "args": null,
   "category": "default",
@@ -36,6 +38,8 @@ Command {
   "id": "NullProps",
   "information": null,
   "ownerOnly": false,
+  "rateLimit": null,
+  "typing": null,
   "userPermissions": null,
 }
 `;
