@@ -40,6 +40,11 @@ class CommandHandler extends ProtonHandler {
             ? options.defaultRateLimit
             : null;
 
+        /** @type {boolean} */
+        this.typing = typeof options.typing === "boolean"
+            ? options.typing
+            : true;
+
         /** @type {AliasManager} */
         this.aliasManager = new AliasManager();
 
@@ -70,6 +75,9 @@ class CommandHandler extends ProtonHandler {
 
         if (typeof mod.rateLimit !== "number")
             mod.rateLimit = this.defaultRateLimit;
+
+        if (typeof mod.typing !== "boolean")
+            mod.typing = this.typing;
     }
 
     /**
@@ -145,7 +153,15 @@ class CommandHandler extends ProtonHandler {
             if (this._handleCooldowns(message, command)) return;
         }
 
-        await command.execute(message);
+        const { typing } = command;
+        try {
+            if (typing)
+                await message.channel.sendTyping();
+
+            await command.execute(message);
+        } catch (error) {
+            this.emit(CommandHandlerEvents.ERROR_AFTER_COMMAND_RUN, error);
+        }
     }
 
     /**
@@ -265,6 +281,7 @@ module.exports = CommandHandler;
  * @property {boolean} [ignoreBots=true] - Whether the client ignores bots.
  * @property {number} [defaultCooldown=null] - Default cooldown for commands.
  * @property {number} [defaultRateLimit=null] - Default ratelimit for commands.
+ * @property {boolean} [typing=false] - Whether or not to type during command execution.
  */
 
 /**

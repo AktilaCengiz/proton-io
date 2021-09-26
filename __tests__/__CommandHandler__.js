@@ -40,12 +40,12 @@ client.commandHandler.on(CommandHandlerEvents.MISSING_PERMISSIONS, (message, com
     }
 });
 
-client.on("messageCreate", () => {
-    console.log(client.commandHandler.cooldownManager);
-});
-
 client.commandHandler.on(CommandHandlerEvents.COOLDOWN, (message, command, remaining) => {
     message.channel.send(`Time remaining to use the command: ${remaining}ms`);
+});
+
+client.commandHandler.on(CommandHandlerEvents.ERROR_AFTER_COMMAND_RUN, (err) => {
+    console.log(err);
 });
 
 client.on("ready", () => {

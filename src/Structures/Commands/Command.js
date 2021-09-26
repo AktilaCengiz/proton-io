@@ -27,7 +27,7 @@ class Command extends ProtonModule {
         /** @type {boolean!} */
         this.advancedArgs = typeof options.advancedArgs === "boolean"
             ? options.advancedArgs
-            : false;
+            : null;
 
         /** @type {number?} */
         this.cooldown = typeof options.cooldown === "number"
@@ -58,6 +58,11 @@ class Command extends ProtonModule {
         this.rateLimit = typeof options.rateLimit === "number"
             ? options.rateLimit
             : null;
+
+        /** @type {boolean?} */
+        this.typing = typeof options.typing === "boolean"
+            ? options.typing
+            : null;
     }
 }
 
@@ -75,6 +80,7 @@ module.exports = Command;
  * @property {PermissionString | PermissionString[]} [clientPermissions=null] - Required client permission(s) for the command.
  * @property {boolean} [executable=true] - Whether the command is executable.
  * @property {number} [rateLimit=null] - Uses allowed before cooldown.
+ * @property {boolean} [typing=null] - Whether or not to type during command execution.
  */
 
 /**
