@@ -1,5 +1,6 @@
 require("dotenv/config");
 const { Intents } = require("discord.js");
+const { off } = require("process");
 const CommandHandler = require("../src/Structures/Commands/CommandHandler");
 const ProtonClient = require("../src/Structures/ProtonClient");
 const { CommandHandlerEvents } = require("../src/Utils/Constants");
@@ -32,12 +33,12 @@ client.commandHandler.on(CommandHandlerEvents.COΜMAND_NOT_FOUND, (message, cmdN
 
 client.commandHandler.on(CommandHandlerEvents.MISSING_PERMISSIONS, (message, command, isClient) => {
     const permissions = command.userPermissions;
-    if (permissions === null) {
+    if (!isClient && command.ownerOnly) {
         message.channel.send(`${command.id} is owner only command`);
-    } else if (isClient) {
-        return message.channel.send(`The client must have the following permissions to run the command: ${permissions instanceof Array ? permissions.join("-") : permissions}\nCommand: ${command.id}`);
+    } else if (!isClient && permissions) {
+        message.channel.send(`You must have the following permissions to run the command: ${permissions instanceof Array ? permissions.join("-") : permissions}\nCommand: ${command.id}`);
     } else {
-        return message.channel.send(`You must have the following permissions to run the command: ${permissions instanceof Array ? permissions.join("-") : permissions}\nCommand: ${command.id}`);
+        message.channel.send(`The client must have the following permissions to run the command: ${permissions instanceof Array ? permissions.join("-") : permissions}\nCommand: ${command.id}`);
     }
 });
 
