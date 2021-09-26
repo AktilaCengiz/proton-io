@@ -5,7 +5,7 @@ const CachedManager = require("../../Managers/CachedManager");
  */
 class CommandCooldown extends CachedManager {
     /**
-     *
+     * Creates a cooldown state for the user.
      * @param {User} user - User structure.
      * @returns {this}
      */

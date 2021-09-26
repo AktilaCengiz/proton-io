@@ -7,7 +7,7 @@ const CommandCooldown = require("./CommandCooldown");
  */
 class CooldownManager extends CachedManager {
     /**
-     *
+     * Creates a command cooldown cache for the cooldown system.
      * @param {Command} command - Command structure.
      * @returns {CommandCooldown}
      */
@@ -21,6 +21,6 @@ class CooldownManager extends CachedManager {
 module.exports = CooldownManager;
 
 /**
- * @typedef {import("./Command")} Command
+ * @typedef {import("../Command")} Command
  * @typedef {import("discord.js").User} User
  */
