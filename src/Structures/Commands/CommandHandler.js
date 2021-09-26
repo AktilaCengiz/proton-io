@@ -2,7 +2,7 @@ const { CommandHandlerEvents } = require("../../Utils/Constants");
 const isAsync = require("../../Utils/isAsync");
 const ProtonHandler = require("../ProtonHandler");
 const AliasManager = require("./AliasManager");
-const CooldownManager = require("./CooldownManager");
+const CooldownManager = require("./Cooldown/CooldownManager");
 
 class CommandHandler extends ProtonHandler {
     /**
@@ -35,11 +35,16 @@ class CommandHandler extends ProtonHandler {
             ? options.defaultCooldown
             : null;
 
+        /** @type {number?} */
+        this.defaultRateLimit = typeof options.defaultRateLimit === "number"
+            ? options.defaultRateLimit
+            : null;
+
         /** @type {AliasManager} */
         this.aliasManager = new AliasManager();
 
         /** @type {CooldownManager} */
-        this.cooldownManager = new CooldownManager(this.defaultCooldown);
+        this.cooldownManager = new CooldownManager();
 
         this.init();
     }
@@ -62,6 +67,9 @@ class CommandHandler extends ProtonHandler {
 
         if (typeof mod.cooldown !== "number")
             mod.cooldown = this.defaultCooldown;
+
+        if (typeof mod.rateLimit !== "number")
+            mod.rateLimit = this.defaultRateLimit;
     }
 
     /**
@@ -134,20 +142,59 @@ class CommandHandler extends ProtonHandler {
 
         // Cooldown
         if (!isOwner) {
-            // The command's cooldown cache.
-            const commandCooldown = this.cooldownManager.cache.get(command.id);
+            if (this._handleCooldowns(message, command)) return;
+        }
 
-            // If not exist, register
-            if (!commandCooldown) {
-                this.cooldownManager.add(message, command);
-            } else if (commandCooldown.cache.has(message.author.id)) {
-                // Remaining time.
-                const remaining = commandCooldown.cache.get(message.author.id) - Date.now();
-                this.emit(CommandHandlerEvents.COOLDOWN, message, command, remaining);
-                return;
+        await command.execute(message);
+    }
+
+    /**
+     * Returns true if the user is on cooldown, otherwise creates a new cooldown cache.
+     * @param {Message} message - Message structure.
+     * @param {Command} command - Command structure.
+     * @returns {boolean}
+     */
+    _handleCooldowns(message, command) {
+        const { rateLimit, cooldown } = command;
+
+        if (cooldown !== null) {
+            // Get the command's cooldown cache.
+            const commandCooldowns = this.cooldownManager.init(command);
+
+            // If there is no user in the cache, register it.
+            if (!commandCooldowns.cache.has(message.author.id)) {
+                commandCooldowns.initState(message.author);
+
+                // Delete from cache after cooldown period.
+                setTimeout(() => {
+                    commandCooldowns.deregister(message.author.id);
+
+                    // If the command cooldown cache is empty, clear the command's cache from the CooldownManager cache.
+                    if (commandCooldowns.cache.size === 0)
+                        this.cooldownManager.deregister(command.id);
+                }, cooldown).unref();
+            }
+
+            // Get the user's cooldown state.
+            const userCooldownState = commandCooldowns.cache.get(message.author.id);
+
+            // If the expiry time is not null, the user is on cooldown.
+            if (userCooldownState.end !== null) {
+                this.emit(CommandHandlerEvents.COOLDOWN, message, command, userCooldownState.end - Date.now());
+                return true;
+            }
+
+            //
+            if (rateLimit) {
+                userCooldownState.usageSize++;
+
+                // If the usage count exceeds the rateLimit, add the expiry time to the "end" property in the user status.
+                if (userCooldownState.usageSize >= rateLimit) {
+                    userCooldownState.end = message.createdTimestamp + cooldown;
+                }
             }
         }
-        await command.execute(message);
+        return false;
     }
 
     /**
@@ -217,6 +264,7 @@ module.exports = CommandHandler;
  * @property {boolean} [ignoreSelf=true] - Whether the client should ignore itself.
  * @property {boolean} [ignoreBots=true] - Whether the client ignores bots.
  * @property {number} [defaultCooldown=null] - Default cooldown for commands.
+ * @property {number} [defaultRateLimit=null] - Default ratelimit for commands.
  */
 
 /**

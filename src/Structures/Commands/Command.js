@@ -53,6 +53,11 @@ class Command extends ProtonModule {
         this.executable = typeof options.executable === "boolean"
             ? options.executable
             : true;
+
+        /** @type {number?} */
+        this.rateLimit = typeof options.rateLimit === "number"
+            ? options.rateLimit
+            : null;
     }
 }
 
@@ -69,6 +74,7 @@ module.exports = Command;
  * @property {PermissionString | PermissionString[]} [userPermissions=null] - Required permission(s) for the user to use the command.
  * @property {PermissionString | PermissionString[]} [clientPermissions=null] - Required client permission(s) for the command.
  * @property {boolean} [executable=true] - Whether the command is executable.
+ * @property {number} [rateLimit=null] - Uses allowed before cooldown.
  */
 
 /**
