@@ -30,7 +30,8 @@ client.commandHandler.on(CommandHandlerEvents.COΜMAND_NOT_FOUND, (message, cmdN
     message.channel.send(`${cmdName} is not found`);
 });
 
-client.commandHandler.on(CommandHandlerEvents.MISSING_PERMISSIONS, (message, command, permissions, ownerOnly, isClient) => {
+client.commandHandler.on(CommandHandlerEvents.MISSING_PERMISSIONS, (message, command, isClient) => {
+    const permissions = command.userPermissions;
     if (permissions === null) {
         message.channel.send(`${command.id} is owner only command`);
     } else if (isClient) {
