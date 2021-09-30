@@ -1,3 +1,6 @@
+const {
+    isString, isArray, isFunction, isBoolean, isNumber, isObject
+} = require("../../Utils/Types");
 const ProtonModule = require("../ProtonModule");
 
 class Command extends ProtonModule {
@@ -10,65 +13,67 @@ class Command extends ProtonModule {
         super(id, options);
 
         /** @type {(string | string[])?} */
-        this.aliases = typeof options.aliases === "string" || options.aliases instanceof Array
+        this.aliases = isString(options.aliases) || isArray(options.aliases)
             ? options.aliases
             : null;
 
         /** @type {object[]?} */
-        this.args = options.args instanceof Array
+        this.args = isArray(options.args)
             ? options.args
             : null;
 
         /** @type {boolean!} */
-        this.ownerOnly = typeof options.ownerOnly === "boolean"
+        this.ownerOnly = isBoolean(options.ownerOnly)
             ? options.ownerOnly
             : false;
 
         /** @type {boolean?} */
-        this.advancedArgs = typeof options.advancedArgs === "boolean"
+        this.advancedArgs = isBoolean(options.advancedArgs)
             ? options.advancedArgs
             : null;
 
         /** @type {number?} */
-        this.cooldown = typeof options.cooldown === "number"
+        this.cooldown = isNumber(options.cooldown)
             ? options.cooldown
             : null;
 
         /** @type {object?} */
-        this.information = typeof options.information === "object"
+        this.information = isObject(options.information)
             ? options.information
             : null;
 
         /** @type {(PermissionString | PermissionString[] | PermissionsRouter)?} */
-        this.userPermissions = typeof options.userPermissions === "string"
-            || typeof options.userPermissions === "function"
-            || options.userPermissions instanceof Array
-            ? typeof options.userPermissions === "function"
+        this.userPermissions = isString(options.userPermissions)
+            || isFunction(options.userPermissions)
+            || isArray(options.userPermissions)
+            ? isFunction(options.userPermissions)
+                // @ts-ignore
                 ? options.userPermissions.bind(this)
                 : options.userPermissions
             : null;
 
         /** @type {(PermissionString | PermissionString[] | PermissionsRouter)?} */
-        this.clientPermissions = typeof options.clientPermissions === "string"
-            || typeof options.clientPermissions === "function"
-            || options.clientPermissions instanceof Array
-            ? typeof options.clientPermissions === "function"
+        this.clientPermissions = isString(options.clientPermissions)
+            || isFunction(options.clientPermissions)
+            || isArray(options.clientPermissions)
+            ? isFunction(options.clientPermissions)
+                // @ts-ignore
                 ? options.clientPermissions.bind(this)
                 : options.clientPermissions
             : null;
 
         /** @type {boolean!} */
-        this.executable = typeof options.executable === "boolean"
+        this.executable = isBoolean(options.executable)
             ? options.executable
             : true;
 
         /** @type {number?} */
-        this.rateLimit = typeof options.rateLimit === "number"
+        this.rateLimit = isNumber(options.rateLimit)
             ? options.rateLimit
             : null;
 
         /** @type {boolean?} */
-        this.typing = typeof options.typing === "boolean"
+        this.typing = isBoolean(options.typing)
             ? options.typing
             : null;
     }
@@ -93,6 +98,7 @@ module.exports = Command;
 
 /**
  * @typedef {import("../ProtonModule").ProtonModuleOptions} ProtonModuleOptions
+ * @typedef {import("./CommandHandler").PrefixRouter} PrefixRouter
  * @typedef {import("discord.js").Message} Message
  * @typedef {import("discord.js").PermissionString} PermissionString
  */
