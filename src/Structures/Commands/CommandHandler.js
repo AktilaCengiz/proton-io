@@ -1,8 +1,8 @@
 const { CommandHandlerEvents } = require("../../Utils/Constants");
-const isAsync = require("../../Utils/isAsync");
 const ProtonHandler = require("../ProtonHandler");
 const AliasManager = require("./AliasManager");
 const CooldownManager = require("./Cooldown/CooldownManager");
+const { isAsync, isString, isFunction } = require("../../Utils/Types");
 
 class CommandHandler extends ProtonHandler {
     /**
@@ -13,9 +13,9 @@ class CommandHandler extends ProtonHandler {
     constructor(client, options) {
         super(client, options);
 
-        /** @type {(string | PrefixBuilder)!} */
-        this.prefix = typeof options.prefix === "string" || typeof options.prefix === "function"
-            ? typeof options.prefix === "function"
+        /** @type {(string | string[] | PrefixRouter)!} */
+        this.prefix = isString(options.prefix) || isFunction(options.prefix)
+            ? isFunction(options.prefix)
                 ? options.prefix.bind(this)
                 : options.prefix
             : "!";
@@ -158,7 +158,6 @@ class CommandHandler extends ProtonHandler {
                 ? await this.prefix(message)
                 : this.prefix(message);
         }
-
         const { isOwner } = {
             isOwner: this.client.isOwner(message.author.id)
         };
@@ -332,7 +331,7 @@ module.exports = CommandHandler;
 
 /**
  * @typedef {object} CommandHandlerOptions
- * @property {PrefixBuilder} [prefix="!"] - Prefix for commands.
+ * @property {PrefixRouter} [prefix="!"] - Prefix for commands.
  * @property {boolean} [ignoreSelf=true] - Whether the client should ignore itself.
  * @property {boolean} [ignoreBots=true] - Whether the client ignores bots.
  * @property {number} [defaultCooldown=null] - Default cooldown for commands.
@@ -353,5 +352,5 @@ module.exports = CommandHandler;
  */
 
 /**
- * @typedef {string | string[] | {(message:Message): string | string[] | Promise<string | string[]>}} PrefixBuilder
+ * @typedef {{(message:Message): string | string[] | Promise<string | string[]>}} PrefixRouter
  */
