@@ -84,9 +84,7 @@ module.exports = Command;
 /**
  * @typedef {object} CommandOptions
  * @property {string|string[]} [aliases=[]] - Command aliases.
- * @property {object[]} [args=null] - Required arguments for the command.
  * @property {boolean} [ownerOnly=false] - Usable only by the client owner.
- * @property {boolean} [advancedArgs=true] - Whether to use the advanced argument system.
  * @property {number} [cooldown=null] - Command cooldown.
  * @property {object} [information=null] - Command information object.
  * @property {PermissionString | PermissionString[] | PermissionsRouter} [userPermissions=null] - Required permission(s) for the user to use the command.
