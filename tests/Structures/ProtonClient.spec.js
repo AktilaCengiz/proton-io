@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const ProtonClient = require("../../src/Structures/ProtonClient");
+const equal = require("../equal");
 
 const id = "123456789012345678";
 
@@ -9,10 +10,10 @@ test("isOwner string", () => {
         intents: []
     });
 
-    expect(client.isOwner(id)).toBe(false);
+    equal(client.isOwner(id), false);
     // @ts-ignore
     client.users.cache.set(id, {});
-    expect(client.isOwner(id)).toBe(false);
+    equal(client.isOwner(id), false);
 });
 
 test("isOwner array", () => {
@@ -24,5 +25,6 @@ test("isOwner array", () => {
     expect(client.isOwner(id)).toBe(false);
     // @ts-ignore
     client.users.cache.set(id, {});
-    expect(client.isOwner(id)).toBe(false);
+    equal(client.isOwner(id), false);
+    expect(client).toMatchSnapshot();
 });

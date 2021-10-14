@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`load 1`] = `
+ProtonHandler {
+  "_events": Object {},
+  "_eventsCount": 0,
+  "_maxListeners": undefined,
+  "automateCategories": true,
+  "client": Object {
+    "application": null,
+    "channels": Array [],
+    "guilds": Array [],
+    "owners": Array [],
+    "presence": undefined,
+    "shard": null,
+    "user": null,
+    "users": Array [],
+  },
+  "directory": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Modules",
+  "modules": Array [
+    LocalModule {
+      "category": "default",
+      "client": Object {
+        "application": null,
+        "channels": Array [],
+        "guilds": Array [],
+        "owners": Array [],
+        "presence": undefined,
+        "shard": null,
+        "user": null,
+        "users": Array [],
+      },
+      "filepath": null,
+      "handler": [Circular],
+      "id": "A",
+    },
+    Object {
+      "category": "Modules",
+      "client": Object {
+        "application": null,
+        "channels": Array [],
+        "guilds": Array [],
+        "owners": Array [],
+        "presence": undefined,
+        "shard": null,
+        "user": null,
+        "users": Array [],
+      },
+      "filepath": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Modules/ExampleModule",
+      "handler": [Circular],
+      "id": "ExampleModule",
+    },
+  ],
+  Symbol(kCapture): false,
+}
+`;

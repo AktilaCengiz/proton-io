@@ -3,6 +3,8 @@
 const ProtonClient = require("../../src/Structures/ProtonClient");
 const ProtonHandler = require("../../src/Structures/ProtonHandler");
 const ProtonModule = require("../../src/Structures/ProtonModule");
+const checkEqualKeys = require("../checkEqualKeys");
+const equal = require("../equal");
 
 class Client extends ProtonClient {
     constructor() {
@@ -22,7 +24,7 @@ beforeEach(client.handler.removeAll.bind(client.handler));
 
 test("ProtonModule", () => {
     const MyFirstModule = new ProtonModule("MyFirstModule", {
-        category: "Software"
+        category: "X"
     });
 
     const MySecondModule = new ProtonModule("MySecondModule");
@@ -33,19 +35,23 @@ test("ProtonModule", () => {
     const registered = client.handler.modules.get("MyFirstModule");
     const registeredSecond = client.handler.modules.get("MySecondModule");
 
-    expect(registered.id).toBe("MyFirstModule");
-    expect(registered.category).toBe("Software");
-    expect(registered.filepath).toBeNull();
-    expect(registered.client).toBe(client);
-    expect(registered.handler).toBe(client.handler);
-    expect(typeof registered.reload).toBe("function");
-    expect(typeof registered.remove).toBe("function");
-    expect(registeredSecond.category).toBe("default");
-    expect(client.handler.modules.size).toBe(2);
-    expect(registered).toMatchSnapshot();
-    expect(registeredSecond).toMatchSnapshot();
+    checkEqualKeys(registered, {
+        id: "MyFirstModule",
+        category: "X",
+        filepath: null,
+        client,
+        handler: client.handler
+    });
+
+    checkEqualKeys(registeredSecond, {
+        id: "MySecondModule",
+        category: "default",
+        filepath: null,
+        client,
+        handler: client.handler
+    });
     registered.remove();
     registeredSecond.remove();
-    expect(client.handler.modules.size).toBe(0);
-    expect(client.handler.modules.random()).toBeUndefined();
+    equal(client.handler.modules.size, 0);
+    equal(client.handler.modules.random(), undefined);
 });

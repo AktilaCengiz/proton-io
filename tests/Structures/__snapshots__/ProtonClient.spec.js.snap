@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`isOwner array 1`] = `
+Object {
+  "application": null,
+  "channels": Array [],
+  "guilds": Array [],
+  "owners": Array [
+    "123456789012345678",
+  ],
+  "presence": undefined,
+  "shard": null,
+  "user": null,
+  "users": Array [
+    "123456789012345678",
+  ],
+}
+`;

@@ -2,6 +2,7 @@
 require("dotenv/config");
 const CommandHandler = require("../../../src/Structures/Commands/CommandHandler");
 const ProtonClient = require("../../../src/Structures/ProtonClient");
+const checkEqualKeys = require("../../checkEqualKeys");
 
 const directory = `${__dirname}/CommandModules`;
 
@@ -19,11 +20,10 @@ test("properties", () => {
         directory
     });
     commandHandler.loadAll();
-
-    expect(commandHandler.prefix).toBe("?");
-    expect(commandHandler.defaultCooldown).toBe(10000);
-    expect(commandHandler.ignoreBots).toBe(true);
-    expect(commandHandler.ignoreBots).toBe(true);
-    expect(commandHandler.modules.first().category).toBe("Users");
+    checkEqualKeys(commandHandler, {
+        prefix: "?",
+        defaultCooldown: 10000,
+        ignoreBots: true,
+    });
     expect(commandHandler).toMatchSnapshot();
 });

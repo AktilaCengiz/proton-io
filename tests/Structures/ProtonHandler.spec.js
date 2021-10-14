@@ -3,6 +3,8 @@
 const ProtonClient = require("../../src/Structures/ProtonClient");
 const ProtonHandler = require("../../src/Structures/ProtonHandler");
 const ProtonModule = require("../../src/Structures/ProtonModule");
+const checkEqualKeys = require("../checkEqualKeys");
+const equal = require("../equal");
 
 const moduleDir = `${process.cwd()}/tests/Structures/Modules`;
 
@@ -26,36 +28,41 @@ beforeEach(() => client.handler.removeAll() /** Nice work */);
 test("load", () => {
     class LocalModule extends ProtonModule {
         constructor() {
-            super("LocalModule");
+            super("A");
         }
     }
 
     const loaded = client.handler.load(LocalModule);
 
-    expect(loaded.category).toBe("default");
-    expect(loaded.client).toBe(client);
-    expect(loaded.handler).toBe(client.handler);
-    expect(loaded.filepath).toBeNull();
-    expect(loaded.id).toBe("LocalModule");
-
+    checkEqualKeys(loaded, {
+        id: "A",
+        category: "default",
+        filepath: null,
+        client,
+        handler: client.handler
+    });
     const loadedSec = client.handler.load(`${moduleDir}/ExampleModule`);
 
-    expect(loadedSec.category).toBe("Modules");
-    expect(loadedSec.client).toBe(client);
-    expect(loadedSec.handler).toBe(client.handler);
-    expect(typeof loadedSec.filepath).toBe("string");
-    expect(loadedSec.id).toBe("ExampleModule");
+    checkEqualKeys(loadedSec, {
+        id: "ExampleModule",
+        category: "Modules",
+        client,
+        handler: client.handler
+    });
+
+    equal(typeof loadedSec.filepath, "string");
+    expect(client.handler).toMatchSnapshot();
 });
 
 test("loadAll", () => {
-    expect(client.handler.modules.size).toBe(0);
+    equal(client.handler.modules.size, 0);
     client.handler.loadAll();
     expect(client.handler.modules.size).toBeGreaterThanOrEqual(1);
 });
 
 test("remove", () => {
     client.handler.loadAll();
-    expect(client.handler.modules.size).toBe(1);
+    equal(client.handler.modules.size, 1);
     client.handler.remove(client.handler.modules.first()?.id);
-    expect(client.handler.modules.size).toBe(0);
+    equal(client.handler.modules.size, 0);
 });
