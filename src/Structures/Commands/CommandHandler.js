@@ -1,8 +1,9 @@
-const { CommandHandlerEvents } = require("../../Utils/Constants");
 const ProtonHandler = require("../ProtonHandler");
 const AliasManager = require("./AliasManager");
 const CooldownManager = require("./Cooldown/CooldownManager");
-const { isAsync, isString, isFunction } = require("../../Utils/Types");
+const { isAsync, isString, isFunction, isBoolean, isArray } = require("../../Utils/Types");
+const CommandRunner = require("./CommandRunner");
+const { CommandHandlerEvents } = require("../../Utils/Constants");
 
 class CommandHandler extends ProtonHandler {
     /**
@@ -16,6 +17,7 @@ class CommandHandler extends ProtonHandler {
         /** @type {(string | string[] | PrefixRouter)!} */
         this.prefix = isString(options.prefix) || isFunction(options.prefix)
             ? isFunction(options.prefix)
+                // @ts-ignore
                 ? options.prefix.bind(this)
                 : options.prefix
             : "!";
@@ -43,11 +45,6 @@ class CommandHandler extends ProtonHandler {
         /** @type {boolean!} */
         this.defaultTyping = typeof options.defaultTyping === "boolean"
             ? options.defaultTyping
-            : false;
-
-        /** @type {boolean!} */
-        this.defaultAdvancedArgs = typeof options.defaultAdvancedArgs === "boolean"
-            ? options.defaultAdvancedArgs
             : false;
 
         /** @type {(PermissionString | PermissionString[] | PermissionsRouter)?} */
@@ -92,24 +89,6 @@ class CommandHandler extends ProtonHandler {
             } else
                 this.aliasManager.register(mod.aliases, mod.id);
         }
-
-        if (typeof mod.cooldown !== "number")
-            mod.cooldown = this.defaultCooldown;
-
-        if (typeof mod.rateLimit !== "number")
-            mod.rateLimit = this.defaultRateLimit;
-
-        if (typeof mod.typing !== "boolean")
-            mod.typing = this.defaultTyping;
-
-        if (typeof mod.advancedArgs !== "boolean")
-            mod.advancedArgs = this.defaultAdvancedArgs;
-
-        if (mod.userPermissions === null)
-            mod.userPermissions = this.defaultUserPermissions;
-
-        if (mod.clientPermissions === null)
-            mod.clientPermissions = this.defaultClientPermissions;
     }
 
     /**
@@ -153,96 +132,33 @@ class CommandHandler extends ProtonHandler {
         let { prefix } = this;
 
         // Get prefix.
-        if (typeof this.prefix === "function") {
+        if (isFunction(this.prefix)) {
             prefix = isAsync(this.prefix)
+                // @ts-ignore
                 ? await this.prefix(message)
+                // @ts-ignore
                 : this.prefix(message);
+        } else if (isArray(this.prefix)) {
+            // @ts-ignore
+            prefix = this.prefix.find((p) => message.content.startsWith(p));
         }
-        const { isOwner } = {
-            isOwner: this.client.isOwner(message.author.id)
-        };
+        const isOwner = this.client.isOwner(message.author.id)
+
 
         if (typeof prefix !== "string" || !message.content.startsWith(prefix))
             return;
 
-        const { args, command } = this._parse(message, prefix);
+        const { command } = this._parse(message, prefix);
 
-        if (!command) return;
+        if (!command)
+            return this.emit(CommandHandlerEvents.COΜMAND_NOT_FOUND, message);
 
-        // If not executable, return.
-        if (!command.executable) {
-            this.emit(CommandHandlerEvents.COMMAND_NOT_EXECUTABLE, message, command);
-            return;
-        }
+        const commandRunner = new CommandRunner(this, command);
 
-        // Permissions
-        if (!await this._checkPermissions(message, command, { isOwner }))
-            return;
-
-        // Cooldown
-        if (!isOwner) {
-            if (this._handleCooldowns(message, command)) return;
-        }
-
-        const { typing } = command;
-        try {
-            if (typing)
-                await message.channel.sendTyping();
-
-            await command.execute(message);
-        } catch (error) {
-            this.emit(CommandHandlerEvents.ERROR_AFTER_COMMAND_RUN, error);
-        }
+        commandRunner.tryRun(message);
     }
 
-    /**
-     * Returns true if the user is on cooldown, otherwise creates a new cooldown cache.
-     * @param {Message} message - Message structure.
-     * @param {Command} command - Command structure.
-     * @returns {boolean}
-     */
-    _handleCooldowns(message, command) {
-        const { rateLimit, cooldown } = command;
 
-        if (cooldown !== null) {
-            // Get the command's cooldown cache.
-            const commandCooldowns = this.cooldownManager.init(command);
-
-            // If there is no user in the cache, register it.
-            if (!commandCooldowns.cache.has(message.author.id)) {
-                commandCooldowns.initState(message.author);
-
-                // Delete from cache after cooldown period.
-                setTimeout(() => {
-                    commandCooldowns.deregister(message.author.id);
-
-                    // If the command cooldown cache is empty, clear the command's cache from the CooldownManager cache.
-                    if (commandCooldowns.cache.size === 0)
-                        this.cooldownManager.deregister(command.id);
-                }, cooldown).unref();
-            }
-
-            // Get the user's cooldown state.
-            const userCooldownState = commandCooldowns.cache.get(message.author.id);
-
-            // If the expiry time is not null, the user is on cooldown.
-            if (userCooldownState.end !== null) {
-                this.emit(CommandHandlerEvents.COOLDOWN, message, command, userCooldownState.end - Date.now());
-                return true;
-            }
-
-            //
-            if (rateLimit) {
-                userCooldownState.usageSize++;
-
-                // If the usage count exceeds the rateLimit, add the expiry time to the "end" property in the user status.
-                if (userCooldownState.usageSize >= rateLimit) {
-                    userCooldownState.end = message.createdTimestamp + cooldown;
-                }
-            }
-        }
-        return false;
-    }
 
     /**
      *
@@ -270,74 +186,18 @@ class CommandHandler extends ProtonHandler {
         };
     }
 
-    /**
-     * @param {Message} message - Message structure.
-     * @param {Command} command - Command structure.
-     * @param {object} others - Other params
-     * @returns {Promise<boolean>}
-     */
-    async _checkPermissions(message, command, { isOwner }) {
-        // Check if owner specific.
-        if (command.ownerOnly && !isOwner) {
-            this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, false);
-            return false;
-        }
-
-        // Check member permission(s).
-        if (command.userPermissions !== null) {
-            let authorized = true;
-            if (typeof command.userPermissions === "function") {
-                const result = isAsync(command.userPermissions)
-                    ? await command.userPermissions(message)
-                    : command.userPermissions(message);
-                if (result !== null)
-                    authorized = false;
-            } else if (typeof command.userPermissions === "string" || command.userPermissions instanceof Array) {
-                if (!message.member.permissions.has(command.userPermissions))
-                    authorized = false;
-            }
-
-            if (!authorized) {
-                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, false);
-                return false;
-            }
-        }
-
-        // Check client permission(s).
-        if (command.clientPermissions !== null) {
-            let runnable = true;
-            if (typeof command.clientPermissions === "function") {
-                const result = isAsync(command.clientPermissions)
-                    ? await command.clientPermissions(message)
-                    : command.clientPermissions(message);
-                if (result !== null)
-                    runnable = false;
-            } else if (typeof command.clientPermissions === "string" || command.clientPermissions instanceof Array) {
-                if (!message.guild.me.permissions.has(command.clientPermissions))
-                    runnable = false;
-            }
-
-            if (!runnable) {
-                this.emit(CommandHandlerEvents.MISSING_PERMISSIONS, message, command, true);
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
 
 module.exports = CommandHandler;
 
 /**
  * @typedef {object} CommandHandlerOptions
- * @property {PrefixRouter} [prefix="!"] - Prefix for commands.
+ * @property {string | string[] | PrefixRouter} [prefix="!"] - Prefix for commands.
  * @property {boolean} [ignoreSelf=true] - Whether the client should ignore itself.
  * @property {boolean} [ignoreBots=true] - Whether the client ignores bots.
  * @property {number} [defaultCooldown=null] - Default cooldown for commands.
  * @property {number} [defaultRateLimit=null] - Default ratelimit for commands.
  * @property {boolean} [defaultTyping=false] - Whether or not to type during command execution.
- * @property {boolean} [defaultAdvancedArgs=false] - Whether to use the advanced argument system.
  * @property {PermissionString | PermissionString[] | PermissionsRouter} [defaultUserPermissions=null] - Required permission(s) for the user to use the command.
  * @property {PermissionString | PermissionString[] | PermissionsRouter} [defaultClientPermissions=null] - Required client permission(s) for the command.
  */
