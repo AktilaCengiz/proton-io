@@ -5,7 +5,7 @@ const { isAsync } = require("../../Utils/Types");
 class CommandRunner extends EventEmitter {
     /**
      * @param {CommandHandler} handler
-     * @param {Command} command 
+     * @param {Command} command
      */
     constructor(handler, command) {
         super();
@@ -16,9 +16,9 @@ class CommandRunner extends EventEmitter {
     }
 
     /**
-     * 
-     * @param {Message} message 
-     * @returns 
+     *
+     * @param {Message} message
+     * @returns
      */
     async tryRun(message) {
         const { command } = this;
@@ -49,7 +49,6 @@ class CommandRunner extends EventEmitter {
         } catch (error) {
             this.emit(CommandRunnerEvents.ERROR_AFTER_COMMAND_RUN, error);
         }
-
     }
 
     /**
@@ -155,12 +154,9 @@ class CommandRunner extends EventEmitter {
         }
         return false;
     }
-
 }
 
 module.exports = CommandRunner;
-
-
 
 /**
  * @typedef {import("discord.js").Message} Message

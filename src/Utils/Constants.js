@@ -9,7 +9,7 @@ const CommandRunnerEvents = {
     MISSING_PERMISSIONS: "missingPermissions",
     COOLDOWN: "cooldown",
     ERROR_AFTER_COMMAND_RUN: "errorAfterCommandRun"
-}
+};
 
 module.exports = {
     CommandHandlerEvents,

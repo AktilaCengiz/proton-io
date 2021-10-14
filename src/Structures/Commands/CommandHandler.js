@@ -1,7 +1,12 @@
 const ProtonHandler = require("../ProtonHandler");
 const AliasManager = require("./AliasManager");
 const CooldownManager = require("./Cooldown/CooldownManager");
-const { isAsync, isString, isFunction, isBoolean, isArray } = require("../../Utils/Types");
+const {
+    isAsync,
+    isString,
+    isFunction,
+    isArray
+} = require("../../Utils/Types");
 const CommandRunner = require("./CommandRunner");
 const { CommandHandlerEvents } = require("../../Utils/Constants");
 
@@ -142,23 +147,20 @@ class CommandHandler extends ProtonHandler {
             // @ts-ignore
             prefix = this.prefix.find((p) => message.content.startsWith(p));
         }
-        const isOwner = this.client.isOwner(message.author.id)
-
 
         if (typeof prefix !== "string" || !message.content.startsWith(prefix))
             return;
 
         const { command } = this._parse(message, prefix);
 
-        if (!command)
-            return this.emit(CommandHandlerEvents.COΜMAND_NOT_FOUND, message);
-
+        if (!command) {
+            this.emit(CommandHandlerEvents.COΜMAND_NOT_FOUND, message);
+            return;
+        }
         const commandRunner = new CommandRunner(this, command);
 
         commandRunner.tryRun(message);
     }
-
-
 
     /**
      *
@@ -185,7 +187,6 @@ class CommandHandler extends ProtonHandler {
             command
         };
     }
-
 }
 
 module.exports = CommandHandler;

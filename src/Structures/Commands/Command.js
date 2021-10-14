@@ -17,20 +17,10 @@ class Command extends ProtonModule {
             ? options.aliases
             : null;
 
-        /** @type {object[]?} */
-        this.args = isArray(options.args)
-            ? options.args
-            : null;
-
         /** @type {boolean!} */
         this.ownerOnly = isBoolean(options.ownerOnly)
             ? options.ownerOnly
             : false;
-
-        /** @type {boolean?} */
-        this.advancedArgs = isBoolean(options.advancedArgs)
-            ? options.advancedArgs
-            : null;
 
         /** @type {number?} */
         this.cooldown = isNumber(options.cooldown)
