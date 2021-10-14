@@ -9,6 +9,6 @@ mongoose.connect("mongodb://localhost/test", {
 }).then(async () => {
     console.log("Veritabanı bağlantısı başarılı.");
     const db = new MongooseProvider(model);
-    const data = await db.model
-    console.log(data)
+    const data = await db.model;
+    console.log(data);
 });

@@ -2,11 +2,9 @@
 
 exports[`Example 1`] = `
 Command {
-  "advancedArgs": true,
   "aliases": Array [
     "example",
   ],
-  "args": Array [],
   "category": "default",
   "client": null,
   "clientPermissions": Array [],
@@ -25,9 +23,7 @@ Command {
 
 exports[`Null props 1`] = `
 Command {
-  "advancedArgs": null,
   "aliases": null,
-  "args": null,
   "category": "default",
   "client": null,
   "clientPermissions": null,

@@ -4,9 +4,7 @@ const Command = require("../../../src/Structures/Commands/Command");
 test("Null props", () => {
     const NullProps = new Command("NullProps");
     expect(NullProps.id).toBe("NullProps");
-    expect(NullProps.advancedArgs).toBe(null);
     expect(NullProps.aliases).toBeNull();
-    expect(NullProps.args).toBeNull();
     expect(NullProps.clientPermissions).toBeNull();
     expect(NullProps.cooldown).toBeNull();
     expect(NullProps.information).toBeNull();
@@ -18,9 +16,7 @@ test("Null props", () => {
 
 test("Example", () => {
     const Example = new Command("Example", {
-        advancedArgs: true,
         aliases: ["example"],
-        args: [],
         clientPermissions: [],
         cooldown: 10000,
         information: {},
@@ -28,9 +24,7 @@ test("Example", () => {
         userPermissions: []
     });
     expect(Example.id).toBe("Example");
-    expect(Example.advancedArgs).toBe(true);
     expect(Example.aliases).toBeInstanceOf(Array);
-    expect(Example.args).toStrictEqual([]);
     expect(Example.clientPermissions).toStrictEqual([]);
     expect(Example.cooldown).toBe(10000);
     expect(Example.information).toStrictEqual({});

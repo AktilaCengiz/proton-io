@@ -13,7 +13,7 @@ const connection = mysql2.createConnection({
 // connection.connect();
 const db = new Provider(connection);
 const data = db.set("aktilacengiz", { name: "ahmet" });
-console.log(data)
+console.log(data);
 // db.delete("aktilacengiz");
 
 // db.set("aktilacengiz", {
@@ -27,4 +27,4 @@ console.log(data)
 //     var data = await db.delete("aktilacengiz")
 //     console.log(data);
 // }
-//a();
+// a();

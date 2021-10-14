@@ -22,18 +22,17 @@ CommandHandler {
   "cooldownManager": CooldownManager {
     "cache": Array [],
   },
-  "defaultAdvancedArgs": false,
+  "defaultClientPermissions": null,
   "defaultCooldown": 10000,
   "defaultRateLimit": null,
   "defaultTyping": false,
+  "defaultUserPermissions": null,
   "directory": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Commands/CommandModules",
   "ignoreBots": true,
   "ignoreSelf": true,
   "modules": Array [
     Object {
-      "advancedArgs": false,
       "aliases": null,
-      "args": null,
       "category": "Users",
       "client": Object {
         "application": null,
@@ -46,7 +45,7 @@ CommandHandler {
         "users": Array [],
       },
       "clientPermissions": null,
-      "cooldown": 10000,
+      "cooldown": null,
       "executable": true,
       "filepath": null,
       "handler": [Circular],
@@ -54,7 +53,7 @@ CommandHandler {
       "information": null,
       "ownerOnly": false,
       "rateLimit": null,
-      "typing": false,
+      "typing": null,
       "userPermissions": null,
     },
   ],

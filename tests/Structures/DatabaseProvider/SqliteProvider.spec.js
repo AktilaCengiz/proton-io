@@ -23,8 +23,7 @@ const SqLiteProivder = require("../../../src/Structures/DatabaseProviders/SqlPro
 
 const db = new SqLiteProivder(sql);
 
-
-//db.set("aktila", { username: "aktila", level: 31, xp: 31 });
+// db.set("aktila", { username: "aktila", level: 31, xp: 31 });
 // var data = db.get("aktila")
 // console.log(data)
 
