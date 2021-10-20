@@ -10,7 +10,7 @@
 - her komuta özel izin ayarları!
 - kategorize edilmiş komutlar ayrıcalığı!
 - ve çok daha fazlası!
-
+<br/><br/>
 - for discord.js v13
 - customizable cooldown for each command!
 - optional "typing" feature!
