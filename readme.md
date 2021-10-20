@@ -6,10 +6,18 @@
 - discord.js v13 ile uyumlu!
 - her komuta özel ayarlanabilir cooldown özelliği!
 - isteğe bağlı "yazıyor" (typing) özelliği!
-- mongoose, sqlite, mySql database provider sağlayıcıları!
+- mongoose, sqlite, mySql veritabanı sağlayıcıları!
 - her komuta özel izin ayarları!
 - kategorize edilmiş komutlar ayrıcalığı!
 - ve çok daha fazlası!
+
+- for discord.js v13
+- customizable cooldown for each command!
+- optional "typing" feature!
+- mongoose, sqlite, mySql database providers!
+- Permission settings specific to each command!
+- categorized commands!
+- and much more!
 
 # 📌 Modül hakkında || Module information
 proton-io discord.js kütüphanesi için yazılmış bir bot kütüphanesidir.
