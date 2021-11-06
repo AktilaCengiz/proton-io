@@ -1,7 +1,7 @@
 const Listener = require("../../../src/Structures/Listeners/Listener");
 const checkEqualKeys = require("../../checkEqualKeys");
 
-test("done", () => {
+test("properties", () => {
     const _ = new Listener("_", {
         emitter: "client",
         event: "ready",

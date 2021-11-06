@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`done 1`] = `
+exports[`properties 1`] = `
 Listener {
   "category": "default",
   "client": null,

@@ -8,4 +8,4 @@ module.exports = class extends Listener {
             type: "once"
         });
     }
-}
+};

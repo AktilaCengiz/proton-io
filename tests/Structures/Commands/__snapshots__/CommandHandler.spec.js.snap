@@ -47,7 +47,7 @@ CommandHandler {
       "clientPermissions": null,
       "cooldown": null,
       "executable": true,
-      "filepath": null,
+      "filepath": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Commands/CommandModules/PingCommand.js",
       "handler": [Circular],
       "id": "Ping",
       "information": null,

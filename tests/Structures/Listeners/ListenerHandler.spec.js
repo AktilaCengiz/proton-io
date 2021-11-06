@@ -7,8 +7,6 @@ const equal = require("../../equal");
 
 const localEmitter = new EventEmitter();
 
-
-
 class Client extends ProtonClient {
     constructor() {
         super({
@@ -35,7 +33,7 @@ test("listen", () => {
                 emitter: "localEmitter",
                 type: "once",
                 event: "ready"
-            })
+            });
         }
 
         execute(message) {
@@ -46,4 +44,4 @@ test("listen", () => {
     client.listenerHandler.load(Ready);
 
     localEmitter.emit("ready", "worked");
-})
+});
