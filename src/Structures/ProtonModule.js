@@ -21,6 +21,12 @@ class ProtonModule {
             : "default";
 
         /**
+         * The file path of the module, if any.
+         * @type {string?}
+         */
+        this.filepath = null;
+
+        /**
          * The module's client class.
          * @type {ProtonClient!}
          */
@@ -31,12 +37,6 @@ class ProtonModule {
          * @type {ProtonHandler!}
          */
         this.handler = null;
-
-        /**
-         * The file path of the module, if any.
-         * @type {string?}
-         */
-        this.filepath = null;
     }
 
     /**
