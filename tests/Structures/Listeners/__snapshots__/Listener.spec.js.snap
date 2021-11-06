@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`done 1`] = `
+Listener {
+  "category": "default",
+  "client": null,
+  "emitter": "client",
+  "event": "ready",
+  "filepath": null,
+  "handler": null,
+  "id": "_",
+  "type": "once",
+}
+`;

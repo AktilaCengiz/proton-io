@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable max-classes-per-file */
+const { Collection } = require("discord.js");
 const ProtonClient = require("../../src/Structures/ProtonClient");
 const ProtonHandler = require("../../src/Structures/ProtonHandler");
-const ProtonModule = require("../../src/Structures/ProtonModule");
 const checkEqualKeys = require("../checkEqualKeys");
 const equal = require("../equal");
 
@@ -23,46 +23,20 @@ class Client extends ProtonClient {
 
 const client = new Client();
 
-beforeEach(() => client.handler.removeAll() /** Nice work */);
-
-test("load", () => {
-    class LocalModule extends ProtonModule {
-        constructor() {
-            super("A");
-        }
-    }
-
-    const loaded = client.handler.load(LocalModule);
-
-    checkEqualKeys(loaded, {
-        id: "A",
-        category: "default",
-        filepath: null,
-        client,
-        handler: client.handler
+test("properties", () => {
+    checkEqualKeys(client.handler, {
+        automateCategories: true,
+        directory: moduleDir,
+        client
     });
-    const loadedSec = client.handler.load(`${moduleDir}/ExampleModule`);
-
-    checkEqualKeys(loadedSec, {
-        id: "ExampleModule",
-        category: "Modules",
-        client,
-        handler: client.handler
-    });
-
-    equal(typeof loadedSec.filepath, "string");
+    expect(client.handler.modules).toBeInstanceOf(Collection);
     expect(client.handler).toMatchSnapshot();
 });
 
-test("loadAll", () => {
+test("load modules", () => {
     equal(client.handler.modules.size, 0);
     client.handler.loadAll();
-    expect(client.handler.modules.size).toBeGreaterThanOrEqual(1);
-});
-
-test("remove", () => {
-    client.handler.loadAll();
-    equal(client.handler.modules.size, 1);
-    client.handler.remove(client.handler.modules.first()?.id);
+    expect(client.handler.modules.size).toBeGreaterThan(0);
+    client.handler.removeAll();
     equal(client.handler.modules.size, 0);
 });

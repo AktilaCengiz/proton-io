@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`properties 1`] = `
+ProtonModule {
+  "category": "default",
+  "client": Object {
+    "application": null,
+    "channels": Array [],
+    "guilds": Array [],
+    "owners": Array [],
+    "presence": undefined,
+    "shard": null,
+    "user": null,
+    "users": Array [],
+  },
+  "filepath": null,
+  "handler": ProtonHandler {
+    "_events": Object {},
+    "_eventsCount": 0,
+    "_maxListeners": undefined,
+    "automateCategories": false,
+    "client": Object {
+      "application": null,
+      "channels": Array [],
+      "guilds": Array [],
+      "owners": Array [],
+      "presence": undefined,
+      "shard": null,
+      "user": null,
+      "users": Array [],
+    },
+    "directory": "",
+    "modules": Array [
+      [Circular],
+    ],
+    Symbol(kCapture): false,
+  },
+  "id": "Mod",
+}
+`;

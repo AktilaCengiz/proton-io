@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`props 1`] = `
+ListenerHandler {
+  "_events": Object {},
+  "_eventsCount": 0,
+  "_maxListeners": undefined,
+  "automateCategories": true,
+  "client": Object {
+    "application": null,
+    "channels": Array [],
+    "guilds": Array [],
+    "owners": Array [],
+    "presence": undefined,
+    "shard": null,
+    "user": null,
+    "users": Array [],
+  },
+  "directory": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Listeners/ListenerModules",
+  "emitters": Array [
+    Object {
+      "application": null,
+      "channels": Array [],
+      "guilds": Array [],
+      "owners": Array [],
+      "presence": undefined,
+      "shard": null,
+      "user": null,
+      "users": Array [],
+    },
+    EventEmitter {
+      "_events": Object {},
+      "_eventsCount": 0,
+      "_maxListeners": undefined,
+      Symbol(kCapture): false,
+    },
+  ],
+  "modules": Array [
+    Object {
+      "category": "ListenerModules",
+      "client": Object {
+        "application": null,
+        "channels": Array [],
+        "guilds": Array [],
+        "owners": Array [],
+        "presence": undefined,
+        "shard": null,
+        "user": null,
+        "users": Array [],
+      },
+      "emitter": "client",
+      "event": "ready",
+      "execute": [Function],
+      "filepath": "/home/heiwa/wioenena/workspace/packages/javascript/node/proton-io/tests/Structures/Listeners/ListenerModules/Basic.js",
+      "handler": [Circular],
+      "id": "Basic",
+      "type": "once",
+    },
+  ],
+  Symbol(kCapture): false,
+}
+`;
