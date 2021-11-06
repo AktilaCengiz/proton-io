@@ -7,3 +7,4 @@ tmp
 yarn.lock
 package-lock.json
 .env
+.npmignore
