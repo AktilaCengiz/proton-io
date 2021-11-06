@@ -13,9 +13,9 @@ class ListenerHandler extends ProtonHandler {
     }
 
     /**
-     * 
-     * @param {Listener} listener 
-     * @param {string?} [filepath] 
+     *
+     * @param {Listener} listener
+     * @param {string?} [filepath]
      */
     register(listener, filepath) {
         super.register(listener, filepath);
@@ -35,8 +35,8 @@ class ListenerHandler extends ProtonHandler {
     }
 
     /**
-     * 
-     * @param {Listener} listener 
+     *
+     * @param {Listener} listener
      */
     deregister(listener) {
         super.deregister(listener);
@@ -46,9 +46,9 @@ class ListenerHandler extends ProtonHandler {
     }
 
     /**
-     * 
-     * @param {string} id 
-     * @param {EventEmitter} emitter 
+     *
+     * @param {string} id
+     * @param {EventEmitter} emitter
      */
     setEmitter(id, emitter) {
         if (!(emitter instanceof EventEmitter))
@@ -58,17 +58,17 @@ class ListenerHandler extends ProtonHandler {
     }
 
     /**
-     * 
-     * @param {object} emitters 
+     *
+     * @param {object} emitters
      * @returns {this}
      */
     setEmitters(emitters) {
+        // eslint-disable-next-line guard-for-in
         for (const id in emitters) {
             this.setEmitter(id, emitters[id]);
         }
         return this;
     }
-
 }
 
 module.exports = ListenerHandler;
