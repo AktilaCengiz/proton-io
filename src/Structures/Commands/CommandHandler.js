@@ -82,10 +82,11 @@ class CommandHandler extends ProtonHandler {
     /**
      *
      * @param {Command} mod - Command
+     * @param {string} [filepath]
      * @returns {void}
      */
-    register(mod) {
-        super.register(mod);
+    register(mod, filepath) {
+        super.register(mod, filepath);
 
         if (typeof mod.aliases === "string" || mod.aliases instanceof Array) {
             if (mod.aliases instanceof Array) {
