@@ -155,7 +155,6 @@ class CommandHandler extends ProtonHandler {
         const { command } = this._parse(message, prefix);
 
         if (!command) {
-            this.emit(CommandHandlerEvents.COΜMAND_NOT_FOUND, message);
             return;
         }
         const commandRunner = new CommandRunner(this, command);
