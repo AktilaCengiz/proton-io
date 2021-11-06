@@ -10,6 +10,7 @@ export class ProtonClient extends Client {
     public owners: StringOrStringArray;
     public isOwner(resolvable: UserResolvable): boolean;
 }
+
 export class ProtonHandler extends EventEmitter {
     public constructor(client: ProtonClient, options: ProtonHandlerOptions);
     public client: ProtonClient;
@@ -55,6 +56,20 @@ export class CommandHandler extends ProtonHandler {
     private init(): void;
     private handle(message: Message): Promise<void>;
     private _parse(message: Message, prefix: string): { args: string[], command?: Command };
+    public on<T extends keyof CommandHandlerEvents>(event: T, listener: (...args: CommandHandlerEvents[T]) => void): this;
+    public on<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): boolean;
+    public emit<T extends keyof CommandHandlerEvents>(event: T, ...args: CommandHandlerEvents[T]): boolean;
+    public emit<T extends string | symbol>(event: T, ...args: unknown[]): this;
+    public once<T extends keyof CommandHandlerEvents>(event: T, listener: (...args: CommandHandlerEvents[T]) => void): this;
+    public once<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
+    public off<T extends keyof CommandHandlerEvents>(event: T, listener: (...args: CommandHandlerEvents[T]) => void): this;
+    public off<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
+    public removeListener<T extends keyof CommandHandlerEvents>(event: T, listener: (...args: CommandHandlerEvents[T]) => void): this;
+    public removeListener<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
+    public removeAllListeners<T extends keyof CommandHandlerEvents>(event: T): this;
+    public removeAllListeners<T extends string | symbol>(event: T): this;
+    public addListener<T extends keyof CommandHandlerEvents>(event: T, listener: (...args: CommandHandlerEvents[T]) => void): this;
+    public addListener<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
 }
 
 export class AliasManager extends CachedManager<string, string>{
@@ -89,6 +104,20 @@ export class CommandRunner extends EventEmitter {
     public tryRun(message: Message): void;
     private _checkPermissions(message: Message, command: Command, { isOwner }: { isOwner: boolean }): Promise<boolean>;
     private _handleCooldowns(message: Message, command: Command): boolean;
+    public on<T extends keyof CommandRunnerEvents>(event: T, listener: (...args: CommandRunnerEvents[T]) => void): this;
+    public on<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): boolean;
+    public emit<T extends keyof CommandRunnerEvents>(event: T, ...args: CommandRunnerEvents[T]): boolean;
+    public emit<T extends string | symbol>(event: T, ...args: unknown[]): this;
+    public once<T extends keyof CommandRunnerEvents>(event: T, listener: (...args: CommandRunnerEvents[T]) => void): this;
+    public once<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
+    public off<T extends keyof CommandRunnerEvents>(event: T, listener: (...args: CommandRunnerEvents[T]) => void): this;
+    public off<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
+    public removeListener<T extends keyof CommandRunnerEvents>(event: T, listener: (...args: CommandRunnerEvents[T]) => void): this;
+    public removeListener<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
+    public removeAllListeners<T extends keyof CommandRunnerEvents>(event: T): this;
+    public removeAllListeners<T extends string | symbol>(event: T): this;
+    public addListener<T extends keyof CommandRunnerEvents>(event: T, listener: (...args: CommandRunnerEvents[T]) => void): this;
+    public addListener<T extends string | symbol>(event: T, listener: (...args: unknown[]) => void): this;
 }
 
 export class CachedManager<KT, VT> {
@@ -191,6 +220,20 @@ export interface ListenerOptions extends ProtonModuleOptions {
 }
 
 export interface ListenerHandlerOptions extends ProtonHandlerOptions { }
+
+export interface CommandHandlerEvents {
+    commandNotFound: [Message, string];
+    commandStart: [];
+    commandEnd: [];
+    error: [];
+}
+
+export interface CommandRunnerEvents {
+    commandNotExecutable: [Message, Command];
+    missingPermissions: [Message, Command, boolean];
+    cooldown: [Message, Command, number];
+    errorAfterCommandRun: [Error];
+}
 
 export interface Utils {
     readdir: (path: string) => string[];
