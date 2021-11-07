@@ -150,6 +150,8 @@ class CommandRunner extends EventEmitter {
                 if (userCooldownState.usageSize >= rateLimit) {
                     userCooldownState.end = message.createdTimestamp + cooldown;
                 }
+            } else {
+                userCooldownState.end = message.createdTimestamp + cooldown;
             }
         }
         return false;
